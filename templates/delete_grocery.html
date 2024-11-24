@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <!-- Page-specific content -->
+    <div class="container">
+        <h1>Delete Grocery</h1>
+
+        <form method="POST">
+            <div class="form-group">
+                <label for="id">Select Grocery to Delete:</label>
+                <select id="id" name="id" required>
+                    <option value="" disabled selected>Select a grocery</option>
+                    {% for grocery in groceries %}
+                        <option value="{{ grocery.id }}">{{ grocery.name }}</option>
+                    {% endfor %}
+                </select><br>
+            </div>
+
+            <button type="submit">Delete Grocery</button>
+        </form>
+    </div>
+{% endblock %}

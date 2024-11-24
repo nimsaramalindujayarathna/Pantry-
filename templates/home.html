@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pantry+</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+</head>
+<body>
+    <!-- Sidebar -->
+    <div class="sidebar">
+        <h2>Pantry+</h2>
+        <a href="{{ url_for('add_grocery') }}">Add New Grocery</a>
+        <a href="{{ url_for('update_grocery') }}">Update Grocery</a>
+        <a href="{{ url_for('stock_levels') }}">Stock Levels</a>
+        <a href="{{ url_for('delete_grocery') }}">Delete Grocery</a>
+    </div>
+
+    <!-- Main Content -->
+    <div class="container">
+        <!-- Header Section -->
+        <header>
+            <h1>Welcome to Pantry+</h1>
+        </header>
+
+        <!-- Content Section (Dynamic) -->
+        {% block content %}{% endblock %}
+
+        <!-- Back to Home Button -->
+        <div class="back-to-home">
+            <a href="{{ url_for('home') }}" class="back-button">Back to Home</a>
+        </div>
+
+        <!-- Footer Section -->
+        <footer>
+            <p>&copy; 2024 Pantry+ | Grocery Management App</p>
+        </footer>
+    </div>
+</body>
+</html>

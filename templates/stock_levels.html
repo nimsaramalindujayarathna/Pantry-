@@ -1,0 +1,38 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container">
+    <h1>Stock Levels</h1>
+
+    <!-- Sorting Dropdown -->
+    <form method="GET" action="{{ url_for('stock_levels') }}">
+        <label for="sort-by">Sort by: </label>
+        <select name="sort-by" id="sort-by" onchange="this.form.submit()">
+            <option value="expiry" {% if sort_by == 'expiry' %}selected{% endif %}>Expiry Date</option>
+            <option value="weight" {% if sort_by == 'weight' %}selected{% endif %}>Weight</option>
+        </select>
+    </form>
+
+    <!-- Grocery Stock Table -->
+    <table>
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Name</th>
+                <th>Weight (g)</th>
+                <th>Expiry Date</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for grocery in groceries %}
+                <tr>
+                    <td>{{ grocery.id }}</td>
+                    <td>{{ grocery.name }}</td>
+                    <td>{{ grocery.weight }}</td>
+                    <td>{{ grocery.expiry }}</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

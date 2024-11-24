@@ -1,0 +1,54 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <div class="container">
+        <h1>Update Grocery Weight</h1>
+
+        <!-- Update Grocery Form -->
+        <form method="POST">
+            <!-- Grocery Selection -->
+            <div class="form-group">
+                <label for="id">Select Grocery:</label>
+                <select id="id" name="id" required onchange="fetchGroceryDetails()">
+                    <option value="" disabled selected>Select a grocery</option>
+                    {% for grocery in groceries %}
+                        <option value="{{ grocery.id }}" data-weight="{{ grocery.weight }}" data-expiry="{{ grocery.expiry }}">
+                            {{ grocery.name }}
+                        </option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            <!-- Removed Grocery Details Section -->
+
+            <!-- Weight Input -->
+            <div class="form-group">
+                <label for="weight">New Weight (g):</label>
+                <input type="number" id="weight" name="weight" required step="0.1" min="0">
+            </div>
+
+            <!-- Expiry Date Input -->
+            <div class="form-group">
+                <label for="expiry">New Expiry Date:</label>
+                <input type="date" id="expiry" name="expiry" required>
+            </div>
+
+            <!-- Submit Button -->
+            <button type="submit" class="btn">Update Grocery</button>
+        </form>
+    </div>
+
+    <!-- JavaScript to handle dynamic details update -->
+    <script>
+        function fetchGroceryDetails() {
+            const selectedOption = document.querySelector('#id').selectedOptions[0];
+            const weight = selectedOption.getAttribute('data-weight');
+            const expiry = selectedOption.getAttribute('data-expiry');
+
+            // Set the current weight and expiry in the input fields
+            document.getElementById('weight').value = weight;
+            document.getElementById('expiry').value = expiry;
+        }
+    </script>
+
+{% endblock %}
