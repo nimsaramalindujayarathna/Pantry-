@@ -33,7 +33,7 @@ body {
 /* General Container for Centered Content */
 .container {
     width: 90%;
-    max-width: 1000px;  /* Set max-width for better control */
+    max-width: 1000px; /* Set max-width for better control */
     margin: 0 auto;
     padding: 20px;
     background-color: #fff;
@@ -105,6 +105,26 @@ form button:hover {
     background-color: #444;
 }
 
+/* Load Cell Selection and Display */
+#loadCellSelection {
+    margin-top: 20px;
+    padding: 15px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    background-color: #f9f9f9;
+}
+
+#loadCellSelection h3 {
+    margin-bottom: 10px;
+    font-size: 1.5rem;
+    color: #333;
+}
+
+#loadCellSelection p {
+    font-size: 1rem;
+    margin: 5px 0;
+}
+
 /* Table styling for displaying groceries */
 table {
     width: 100%;
@@ -166,7 +186,7 @@ table td:hover {
 
 /* Content Styles */
 .container {
-    padding-top: 50px;  /* Added space to ensure content isn't covered by the notification icon */
+    padding-top: 50px; /* Added space to ensure content isn't covered by the notification icon */
 }
 
 /* Footer Styling */
@@ -181,14 +201,14 @@ footer {
 #notification-icon {
     position: fixed;
     top: 20px;
-    right: 20px;  /* Ensure it's positioned at the top right */
-    z-index: 999;  /* Ensure it stays on top of other content */
+    right: 20px; /* Ensure it's positioned at the top right */
+    z-index: 999; /* Ensure it stays on top of other content */
 }
 
 #notification-icon img {
-    width: 40px;  /* Adjust the size */
+    width: 40px; /* Adjust the size */
     height: 40px;
-    cursor: pointer;  /* Add pointer cursor */
+    cursor: pointer; /* Add pointer cursor */
 }
 
 /* Back to Home Button Styling */
@@ -213,7 +233,7 @@ footer {
 
 /* Modal Styling (Message Box) */
 .modal {
-    display: none;  /* Hidden by default */
+    display: none; /* Hidden by default */
     position: fixed;
     z-index: 1000;
     left: 0;

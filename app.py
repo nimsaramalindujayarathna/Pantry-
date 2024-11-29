@@ -1,8 +1,12 @@
-from flask import Flask, render_template, request, redirect, url_for
+from flask import Flask, render_template, request, redirect, url_for, jsonify
 import sqlite3
+import requests
 from datetime import datetime
 
 app = Flask(__name__)
+
+# Firebase database URL for load cell data (update this with your actual database URL)
+firebase_db_url = "https://pantryplus-b207e-default-rtdb.asia-southeast1.firebasedatabase.app/loadCell.json"
 
 # Database connection function
 def get_db_connection():
@@ -32,6 +36,21 @@ def create_db():
 # Call create_db() to ensure the database and table are created
 create_db()
 
+# Route to fetch load cell data from Firebase
+@app.route('/get-load-cell-data', methods=['GET'])
+def get_load_cell_data():
+    try:
+        # Make a GET request to the Firebase database
+        response = requests.get(firebase_db_url)
+        response.raise_for_status()  # Raise an HTTPError for bad responses
+
+        # Return the Firebase data as a JSON response
+        return jsonify(response.json())
+    except requests.exceptions.RequestException as e:
+        # Print error to console for debugging
+        print(f"Error fetching data from Firebase: {e}")
+        return jsonify({"error": "Failed to fetch data from Firebase"}), 500
+
 # Home page
 @app.route('/')
 def home():
@@ -60,9 +79,16 @@ def add_grocery():
 @app.route('/update-grocery', methods=['GET', 'POST'])
 def update_grocery():
     if request.method == 'POST':
+        # Get the data from the form
         grocery_id = request.form['id']
         new_weight = request.form['weight']
         new_expiry = request.form['expiry']
+        
+        # Ensure that the data is correctly converted to float for weight
+        try:
+            new_weight = float(new_weight)
+        except ValueError:
+            return "Invalid weight value", 400  # Return an error if the weight is not a valid number
         
         # Update the grocery item's weight and expiry date in the database
         conn = get_db_connection()

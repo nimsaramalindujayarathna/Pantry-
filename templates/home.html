@@ -18,23 +18,28 @@
 
     <!-- Main Content -->
     <div class="container">
-        <!-- Header Section -->
-        <header>
-            <h1>Welcome to Pantry+</h1>
-        </header>
+    <!-- Header Section -->
+    <header>
+        <h1>Welcome to Pantry+</h1>
+    </header>
 
-        <!-- Content Section (Dynamic) -->
-        {% block content %}{% endblock %}
+    <!-- Introduction Section -->
+    <section class="introduction">
+        <p>Pantry+ is your all-in-one grocery management tool, designed to help you efficiently manage your grocery items, track expiry dates, and maintain stock levels. With a simple and user-friendly interface, Pantry+ makes it easy to add, update, view, and delete grocery items, ensuring you stay on top of your pantry needs.</p>
+    </section>
 
-        <!-- Back to Home Button -->
-        <div class="back-to-home">
-            <a href="{{ url_for('home') }}" class="back-button">Back to Home</a>
-        </div>
+    <!-- Content Section (Dynamic) -->
+    {% block content %}{% endblock %}
 
-        <!-- Footer Section -->
-        <footer>
-            <p>&copy; 2024 Pantry+ | Grocery Management App</p>
-        </footer>
+    <!-- Back to Home Button -->
+    <div class="back-to-home">
+        <a href="{{ url_for('home') }}" class="back-button">Back to Home</a>
     </div>
+
+    <!-- Footer Section -->
+    <footer>
+        <p>&copy; 2024 Pantry+ | Grocery Management App</p>
+    </footer>
+</div>
 </body>
 </html>
