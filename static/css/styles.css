@@ -21,7 +21,7 @@ body {
     right: 0;
     bottom: 0;
     z-index: -1; /* Ensures the background image stays behind the content */
-    opacity: 0.4; /* Set the opacity of the background image */
+    opacity: 0.75; /* Set the opacity of the background image */
 }
 
 #background-image img {
@@ -166,7 +166,9 @@ table td:hover {
 
 /* Content Styles */
 .container {
-    padding-top: 50px; /* Added space to ensure content isn't covered by the notification icon */
+    display: flex;
+    flex-direction: column;
+    min-height: 84vh;
 }
 
 /* Footer Styling */
@@ -294,26 +296,30 @@ footer {
     margin-top: 20px;
 }
 
-/* Responsive Design */
-@media screen and (max-width: 768px) {
-    .sidebar {
-        width: 200px;
-        padding: 10px;
-    }
-
-    .container {
-        padding: 20px 10px;
-    }
-
-    .option {
-        font-size: 14px;
-        padding: 10px 15px;
-    }
-}
 
 .intro-text {
     text-align: center;
     padding: 25px;
     font-size: 21px;
     font-family: 'Courier New', Courier, monospace;
+}
+
+header {
+    /* Header styling */
+}
+
+.content {
+    flex: 1; /* Takes up the remaining space between header and footer */
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between; /* Distributes content evenly */
+}
+
+.back-to-home {
+    margin: 20px 0; /* Space for the back button */
+}
+
+footer {
+    /* Footer styling */
+    margin-top: auto; /* Keeps footer at the bottom */
 }
