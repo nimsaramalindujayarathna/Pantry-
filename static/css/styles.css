@@ -6,15 +6,15 @@
 }
 
 .highlight-weight {
-    background-color: rgb(154, 240, 128) !important; /* Red highlight */
+    background-color: rgb(144, 238, 144) !important; /* Light Green */
 }
 
 .highlight-expiry {
-    background-color: rgb(250, 233, 156) !important; /* Yellow highlight */
+    background-color: rgb(255, 250, 120) !important; /* Light Yellow */
 }
 
 .highlight-both {
-    background-color: rgb(250, 108, 108) !important; /* Green highlight */
+    background-color: rgb(255, 99, 71) !important; /* Tomato Red */
 }
 
 /* Body styling */
