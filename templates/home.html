@@ -1,45 +1,16 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Pantry+</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
-</head>
-<body>
-    <!-- Sidebar -->
-    <div class="sidebar">
-        <h2>Pantry+</h2>
-        <a href="{{ url_for('add_grocery') }}">Add New Grocery</a>
-        <a href="{{ url_for('update_grocery') }}">Update Grocery</a>
-        <a href="{{ url_for('stock_levels') }}">Stock Levels</a>
-        <a href="{{ url_for('delete_grocery') }}">Delete Grocery</a>
-    </div>
+{% extends "base.html" %}
 
-    <!-- Main Content -->
+{% block content %}
     <div class="container">
-    <!-- Header Section -->
-    <header>
-        <h1>Welcome to Pantry+</h1>
-    </header>
-
-    <!-- Introduction Section -->
-    <section class="introduction">
-        <p>Pantry+ is your all-in-one grocery management tool, designed to help you efficiently manage your grocery items, track expiry dates, and maintain stock levels. With a simple and user-friendly interface, Pantry+ makes it easy to add, update, view, and delete grocery items, ensuring you stay on top of your pantry needs.</p>
-    </section>
-
-    <!-- Content Section (Dynamic) -->
-    {% block content %}{% endblock %}
-
-    <!-- Back to Home Button -->
-    <div class="back-to-home">
-        <a href="{{ url_for('home') }}" class="back-button">Back to Home</a>
+        <p class="intro-text">Manage your pantry efficiently with the following options:</p>
+        
+        <div class="option-links">
+            <a href="{{ url_for('add_grocery') }}" class="option card">Add New Grocery</a>
+            <a href="{{ url_for('update_grocery') }}" class="option card">Update Grocery</a>
+            <a href="{{ url_for('stock_levels') }}" class="option card">View Grocery Stocks</a>
+            <a href="{{ url_for('delete_grocery') }}" class="option card">Delete or Unassign Grocery</a>
+        </div>
+        
+        <p class="instructions">To get started, select an option from the list above.</p>
     </div>
-
-    <!-- Footer Section -->
-    <footer>
-        <p>&copy; 2024 Pantry+ | Grocery Management App</p>
-    </footer>
-</div>
-</body>
-</html>
+{% endblock %}
