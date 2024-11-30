@@ -168,7 +168,7 @@ table td:hover {
 .container {
     display: flex;
     flex-direction: column;
-    min-height: 84vh;
+    min-height: 87vh;
 }
 
 /* Footer Styling */
@@ -304,10 +304,6 @@ footer {
     font-family: 'Courier New', Courier, monospace;
 }
 
-header {
-    /* Header styling */
-}
-
 .content {
     flex: 1; /* Takes up the remaining space between header and footer */
     display: flex;
@@ -322,4 +318,9 @@ header {
 footer {
     /* Footer styling */
     margin-top: auto; /* Keeps footer at the bottom */
+}
+
+#loadCellReadings {
+    font-weight: bold;
+    font-size:  20px;
 }

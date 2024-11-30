@@ -57,13 +57,12 @@
                     <select id="loadCell" name="loadCell" required onchange="fetchLoadCellReading()">
                         <!-- <option value="" disabled selected>Select a load cell</option> -->
                         <option value="1">Load Cell 1</option>
-                        <option value="2">LoadCell 2</option>
+                        <option value="2">Load Cell 2</option>
                         <option value="3">Load Cell 3</option>
                     </select>
                 </div>
-
-                <h3>Real-time Load Cell Readings</h3>
-                <div id="loadCellReadings">
+                <br>
+                <div id="loadCellReadings" >
                     <p id="weight1" style="display: none;">Load Cell 1: Loading...</p>
                     <p id="weight2" style="display: none;">Load Cell 2: Loading...</p>
                     <p id="weight3" style="display: none;">Load Cell 3: Loading...</p>
@@ -152,9 +151,9 @@
                 const data = snapshot.val();
 
                 // Update the weights in the respective paragraphs and input field
-                document.getElementById('weight1').innerText = `Load Cell 1: ${data.loadCell1.weight.toFixed(2)} g`;
-                document.getElementById('weight2').innerText = `Load Cell 2: ${data.loadCell2.weight.toFixed(2)} g`;
-                document.getElementById('weight3').innerText = `Load Cell 3: ${data.loadCell3.weight.toFixed(2)} g`;
+                document.getElementById('weight1').innerText = `Real-time Weight: ${data.loadCell1.weight.toFixed(2)} g`;
+                document.getElementById('weight2').innerText = `Real-time Weight: ${data.loadCell2.weight.toFixed(2)} g`;
+                document.getElementById('weight3').innerText = `Real-time Weight: ${data.loadCell3.weight.toFixed(2)} g`;
 
                 // Update the weight input when a load cell is selected
                 const selectedLoadCell = document.getElementById('loadCell').value;
