@@ -12,27 +12,113 @@
             <option value="weight" {% if sort_by == 'weight' %}selected{% endif %}>Weight</option>
         </select>
     </form>
-
+    <br>
+    <!-- Threshold Input Fields -->
+    <div class="form-group1">
+        <label for="weight-threshold">Weight (g):</label>
+        <input type="number" id="weight-threshold" name="weight-threshold" step="0.01" min="0">
+        <label for="expiry-threshold">Number of days:</label>
+        <input type="number" id="expiry-threshold" name="expiry-threshold" min="1">
+    </div>
+    <button id="sp" type="button" onclick="highlightGroceries()">Apply</button>
+    
+    <!-- Legend for Color Codes -->
+    <div class="legend">
+        <h3>Legend</h3>
+        <ul>
+            <li><span class="highlight-weight"></span> Groceries about to run out (Red)</li>
+            <li><span class="highlight-expiry"></span> Groceries about to expire (Yellow)</li>
+            <li><span class="highlight-both"></span> Groceries about to run out and expire (Orange)</li>
+        </ul>
+    </div>
     <!-- Grocery Stock Table -->
-    <table>
+    <table id="grocery-table">
         <thead>
             <tr>
                 <th>ID</th>
                 <th>Name</th>
                 <th>Weight (g)</th>
                 <th>Expiry Date</th>
+                <th>Days Until Expiry</th> <!-- New column header -->
             </tr>
         </thead>
         <tbody>
             {% for grocery in groceries %}
-                <tr>
-                    <td>{{ grocery.id }}</td>
-                    <td>{{ grocery.name }}</td>
-                    <td>{{ grocery.weight }}</td>
-                    <td>{{ grocery.expiry }}</td>
-                </tr>
+            <tr data-id="{{ grocery.id }}" data-weight="{{ grocery.weight }}" data-expiry="{{ grocery.expiry }}">
+                <td>{{ grocery.id }}</td>
+                <td>{{ grocery.name }}</td>
+                <td>{{ grocery.weight }}</td>
+                <td>{{ grocery.expiry }}</td>
+                <td class="days-until-expiry"></td>
+            </tr>
             {% endfor %}
         </tbody>
     </table>
 </div>
+
+<!-- JavaScript for highlighting rows and calculating days -->
+<script>
+    function calculateDaysUntilExpiry(expiryDateStr) {
+        const today = new Date();
+        const expiryDate = new Date(expiryDateStr); // Convert to Date object
+        const daysUntilExpiry = Math.floor((expiryDate - today) / (1000 * 60 * 60 * 24));
+
+        console.log(`Expiry Date: ${expiryDateStr}, Days Until Expiry: ${daysUntilExpiry}`);
+
+        return isNaN(daysUntilExpiry) ? 'Invalid Date' : daysUntilExpiry;
+    }
+
+    function highlightGroceries() {
+        // Get threshold values from input fields
+        const weightThreshold = parseFloat(document.getElementById('weight-threshold').value);
+        const expiryThreshold = parseInt(document.getElementById('expiry-threshold').value);
+
+        console.log(`Weight Threshold: ${weightThreshold}, Expiry Threshold: ${expiryThreshold}`);
+
+        // Get all table rows (excluding the header)
+        const rows = document.querySelectorAll('#grocery-table tbody tr');
+        
+        rows.forEach(row => {
+            const weight = parseFloat(row.getAttribute('data-weight'));
+            const expiryDateStr = row.getAttribute('data-expiry');
+            const daysUntilExpiry = calculateDaysUntilExpiry(expiryDateStr);
+            const daysCell = row.querySelector('.days-until-expiry');
+
+            // Display the calculated days in the new column
+            daysCell.textContent = daysUntilExpiry;
+
+            let highlightClass = '';
+
+            console.log(`Row ID: ${row.getAttribute('data-id')}, Weight: ${weight}, Days Until Expiry: ${daysUntilExpiry}`);
+
+            // Check if weight condition is met
+            if (weightThreshold && weight < weightThreshold) {
+                highlightClass = 'highlight-weight'; // Red highlight for weight condition
+                console.log(`Row ${row.getAttribute('data-id')} highlighted for weight condition.`);
+            }
+
+            // Check if expiry condition is met
+            if (expiryThreshold && daysUntilExpiry <= expiryThreshold) {
+                if (highlightClass) {
+                    highlightClass = 'highlight-both'; // Both conditions met
+                    console.log(`Row ${row.getAttribute('data-id')} highlighted for both weight and expiry conditions.`);
+                } else {
+                    highlightClass = 'highlight-expiry'; // Yellow highlight for expiry condition
+                    console.log(`Row ${row.getAttribute('data-id')} highlighted for expiry condition.`);
+                }
+            }
+
+            // Apply class if necessary
+            row.className = ''; // Clear any existing classes
+            if (highlightClass) {
+                row.classList.add(highlightClass);
+                console.log(`Row ${row.getAttribute('data-id')} class applied: ${highlightClass}`);
+            }
+        });
+    }
+
+    // Call highlightGroceries on page load to calculate and display the days
+    window.onload = highlightGroceries;
+</script>
+
 {% endblock %}
