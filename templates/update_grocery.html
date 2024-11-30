@@ -19,54 +19,43 @@
                 </select>
             </div>
 
-            <!-- Weight Input -->
-            <div class="form-group" id="manualInput">
-                <label for="weight">New Weight (g):</label>
-                <input type="number" id="weight" name="weight" required step="0.01" min="0">
-            </div>
-
-            <!-- Expiry Date Input -->
-            <!-- Expiry Date Input -->
-<div class="form-group">
-    <label for="expiry">New Expiry Date:</label>
-    <input type="date" id="expiry" name="expiry" required>
-</div>
-
-<script>
-    // Set the minimum date for the expiry input to today's date
-    document.addEventListener('DOMContentLoaded', function () {
-        const today = new Date().toISOString().split('T')[0]; // Get current date in YYYY-MM-DD format
-        document.getElementById('expiry').min = today;
-    });
-</script>
-
-            <!-- Input Method Selection -->
+            <!-- Input Method Selection (Radio buttons) -->
             <div class="form-group">
-                <label for="method">Select Input Method:</label>
-                <select id="method" name="method" required onchange="toggleInputMethod()">
-                    <option value="" disabled selected>Select input method</option>
-                    <option value="manual">Manual Entry</option>
-                    <option value="load_cell">Load Cell</option>
-                </select>
+                <label>Select Input Method:</label><br>
+                <input type="radio" id="manual" name="inputMethod" value="manual" required onclick="toggleInputMethod()"> 
+                <label for="manual">Manual Entry</label><br>
+                <input type="radio" id="loadCell" name="inputMethod" value="load_cell" onclick="toggleInputMethod()"> 
+                <label for="loadCell">Load Cell</label>
             </div>
 
-            <!-- Load Cell Selection -->
+            <!-- Weight Input (Visible only when 'Manual' is selected) -->
+            <div class="form-group" id="manualInput" style="display: none;">
+                <label for="weight">New Weight (g):</label>
+                <input type="number" id="weight" name="weight" step="0.01" min="0">
+            </div>
+
+            <!-- Load Cell Selection (Visible only when 'Load Cell' is selected) -->
             <div id="loadCellSelection" style="display: none;">
                 <div class="form-group">
-                    <label for="loadCell">Select Load Cell:</label>
-                    <select id="loadCell" name="loadCell" required onchange="fetchLoadCellReading()">
-                        <!-- <option value="" disabled selected>Select a load cell</option> -->
-                        <option value="1">Load Cell 1</option>
-                        <option value="2">Load Cell 2</option>
-                        <option value="3">Load Cell 3</option>
-                    </select>
+                    <label>Select Load Cell:</label><br>
+                    <input type="radio" id="loadCell1" name="loadCell" value="1">
+                    <label for="loadCell1">Scale 1:</label>
+                    <span id="weight1" style="font-weight: bold;">Loading...</span><br>
+                    
+                    <input type="radio" id="loadCell2" name="loadCell" value="2">
+                    <label for="loadCell2">Scale 2:</label>
+                    <span id="weight2" style="font-weight: bold;">Loading...</span><br>
+                    
+                    <input type="radio" id="loadCell3" name="loadCell" value="3">
+                    <label for="loadCell3">Scale 3:</label>
+                    <span id="weight3" style="font-weight: bold;">Loading...</span>
                 </div>
-                <br>
-                <div id="loadCellReadings" >
-                    <p id="weight1" style="display: none;">Load Cell 1: Loading...</p>
-                    <p id="weight2" style="display: none;">Load Cell 2: Loading...</p>
-                    <p id="weight3" style="display: none;">Load Cell 3: Loading...</p>
-                </div>
+            </div>
+
+            <!-- Expiry Date Input -->
+            <div class="form-group">
+                <label for="expiry">New Expiry Date:</label>
+                <input type="date" id="expiry" name="expiry" required>
             </div>
 
             <!-- Submit Button -->
@@ -87,52 +76,40 @@
         }
 
         function toggleInputMethod() {
-            const method = document.getElementById('method').value;
+            const manualInput = document.getElementById('manualInput');
             const loadCellSelection = document.getElementById('loadCellSelection');
-
-            if (method === 'manual') {
-                loadCellSelection.style.display = 'none';
-            } else if (method === 'load_cell') {
-                loadCellSelection.style.display = 'block';
-            }
-        }
-
-        function fetchLoadCellReading() {
-            const selectedLoadCell = document.getElementById('loadCell').value;
-            const weight1 = document.getElementById('weight1');
-            const weight2 = document.getElementById('weight2');
-            const weight3 = document.getElementById('weight3');
-            const weightInput = document.getElementById('weight');
-
-            // Adjust the visibility based on the selected load cell
-            weight1.style.display = (selectedLoadCell === '1') ? 'block' : 'none';
-            weight2.style.display = (selectedLoadCell === '2') ? 'block' : 'none';
-            weight3.style.display = (selectedLoadCell === '3') ? 'block' : 'none';
-
-            // Update the weight input field with the real-time reading
-            if (selectedLoadCell) {
-                const readingElement = document.getElementById(`weight${selectedLoadCell}`);
-                if (readingElement) {
-                    // Extract and format the reading to 2 decimal places
-                    const reading = parseFloat(readingElement.innerText.split(': ')[1].replace(' g', ''));
-                    weightInput.value = reading.toFixed(2);
+            const method = document.querySelector('input[name="inputMethod"]:checked');
+            
+            if (method) {
+                if (method.value === 'manual') {
+                    manualInput.style.display = 'block';
+                    loadCellSelection.style.display = 'none';
+                } else if (method.value === 'load_cell') {
+                    manualInput.style.display = 'none';
+                    loadCellSelection.style.display = 'block';
                 }
             }
         }
+
+        // Set the minimum date for the expiry input to today's date
+        document.addEventListener('DOMContentLoaded', function () {
+            const today = new Date().toISOString().split('T')[0];
+            document.getElementById('expiry').min = today;
+        });
     </script>
 
     <!-- Firebase Real-time Updates -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-app.js";
         import { getDatabase, ref, onValue } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-database.js";
-        
+
         // Your Firebase configuration object
         const firebaseConfig = {
             apiKey: "AIzaSyCLBEqsEJiDWxVoRD0kcjeGbJGEtil-7yY",
             authDomain: "pantryplus-b207e.firebaseapp.com",
             databaseURL: "https://pantryplus-b207e-default-rtdb.asia-southeast1.firebasedatabase.app",
             projectId: "pantryplus-b207e",
-            storageBucket: "pantryplus-b207e.firebasestorage.app",
+            storageBucket: "pantryplus-b207e.appspot.com",
             messagingSenderId: "547753572896",
             appId: "1:547753572896:web:8a55c5ced38feab04c5a45",
             measurementId: "G-DN9C2QWLT6"
@@ -150,17 +127,10 @@
             if (snapshot.exists()) {
                 const data = snapshot.val();
 
-                // Update the weights in the respective paragraphs and input field
-                document.getElementById('weight1').innerText = `Real-time Weight: ${data.loadCell1.weight.toFixed(2)} g`;
-                document.getElementById('weight2').innerText = `Real-time Weight: ${data.loadCell2.weight.toFixed(2)} g`;
-                document.getElementById('weight3').innerText = `Real-time Weight: ${data.loadCell3.weight.toFixed(2)} g`;
-
-                // Update the weight input when a load cell is selected
-                const selectedLoadCell = document.getElementById('loadCell').value;
-                if (selectedLoadCell) {
-                    const reading = data[`loadCell${selectedLoadCell}`].weight;
-                    document.getElementById('weight').value = reading.toFixed(2);
-                }
+                // Update the weights in the respective spans next to radio buttons
+                document.getElementById('weight1').innerText = `${data.loadCell1.weight.toFixed(2)} g`;
+                document.getElementById('weight2').innerText = `${data.loadCell2.weight.toFixed(2)} g`;
+                document.getElementById('weight3').innerText = `${data.loadCell3.weight.toFixed(2)} g`;
             } else {
                 console.log("No data available");
             }

@@ -1,4 +1,4 @@
-/* Reset some basic styles */
+/* Reset basic styles */
 * {
     margin: 0;
     padding: 0;
@@ -7,105 +7,103 @@
 
 /* Body styling */
 body {
-    font-family: Arial, sans-serif;
+    font-family: 'Roboto', Arial, sans-serif;
     color: #333;
     padding: 20px;
-    position: relative; /* Ensure ::before can be positioned relative to the body */
+    position: relative;
+    background-color: #f8f9fa;
 }
 
-/* Background Image with Opacity */
+/* Background Image */
 #background-image {
     position: absolute;
     top: 0;
     left: 0;
     right: 0;
     bottom: 0;
-    z-index: -1; /* Ensures the background image stays behind the content */
-    opacity: 0.75; /* Set the opacity of the background image */
+    z-index: -1;
+    opacity: 0.85;
 }
 
 #background-image img {
     width: 100%;
     height: 100%;
-    object-fit: cover; /* Ensures the image covers the entire area */
+    object-fit: cover;
 }
 
-/* General Container for Centered Content */
-.container {
-    width: 90%;
-    max-width: 1000px; /* Set max-width for better control */
-    margin: 0 auto;
-    padding: 20px;
-    background-color: #fff;
-    border-radius: 8px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-}
+/* Container Styling */
 
-/* Header styling */
+/* Header Styling */
 header {
     text-align: center;
-    margin-bottom: 20px;
+    margin-bottom: 25px;
 }
 
 header h1 {
-    font-size: 2rem;
+    font-size: 2.5rem;
     color: #333;
+    margin-bottom: 10px;
 }
 
-/* Navigation bar */
+/* Navigation Bar */
 nav {
-    background-color: #333;
-    padding: 10px;
-    margin-bottom: 20px;
-    border-radius: 5px;
+    background-color: #007bff;
+    padding: 10px 20px;
+    margin-bottom: 30px;
+    border-radius: 8px;
+    display: flex;
+    justify-content: space-between;
 }
 
 nav a {
-    color: #fff;
+    color: #ffffff;
     text-decoration: none;
-    margin-right: 20px;
-    font-size: 1rem;
+    margin-right: 15px;
+    font-size: 1.1rem;
+    transition: color 0.3s;
 }
 
 nav a:hover {
-    text-decoration: underline;
+    color: #cce7ff;
 }
 
-/* Form styling */
+/* Form Styling */
 form {
     display: flex;
     flex-direction: column;
-    gap: 15px;
+    gap: 20px;
 }
 
 form input,
 form select,
 form button {
-    padding: 10px;
+    padding: 12px;
     font-size: 1rem;
-    border-radius: 5px;
-    border: 1px solid #ccc;
+    border-radius: 8px;
+    border: 1px solid #ddd;
+    transition: box-shadow 0.3s, border-color 0.3s;
 }
 
 form input:focus,
 form select:focus,
 form button:focus {
-    border-color: #333;
+    border-color: #007bff;
+    box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
     outline: none;
 }
 
 form button {
-    background-color: #333;
-    color: white;
+    background-color: #007bff;
+    color: #ffffff;
     cursor: pointer;
     transition: background-color 0.3s;
 }
 
 form button:hover {
-    background-color: #444;
+    background-color: #0056b3;
 }
 
-/* Table styling for displaying groceries */
+/* Table Styling */
 table {
     width: 100%;
     border-collapse: collapse;
@@ -114,61 +112,68 @@ table {
 
 table th,
 table td {
-    padding: 10px;
+    padding: 12px;
     text-align: left;
     border-bottom: 1px solid #ddd;
 }
 
 table th {
-    background-color: #333;
-    color: #fff;
+    background-color: #007bff;
+    color: #ffffff;
+    font-size: 1.1rem;
 }
 
 table td {
     background-color: #f9f9f9;
+    font-size: 1rem;
 }
 
 table td:hover {
     background-color: #f1f1f1;
 }
-
-/* Sidebar Styles */
 .sidebar {
     height: 100%;
-    width: 220px; /* Adjusted width for better fit */
+    width: 300px;
     position: fixed;
     top: 0;
     left: 0;
-    background-color: #333;
-    padding-top: 20px;
-    padding-left: 15px; /* Adjusted padding for better content spacing */
-    padding-right: 15px;
-}
-
-.sidebar h2 {
-    font-size: 1.5rem;
-    color: #fff; /* Updated color to white for better visibility */
-    margin-bottom: 20px;
-}
-
-.sidebar a {
-    padding: 10px 15px;
-    text-decoration: none;
-    font-size: 18px;
-    color: white;
-    display: block;
-    margin-bottom: 10px;
-}
-
-.sidebar a:hover {
-    background-color: #444;
-}
-
-/* Content Styles */
-.container {
+    background-color: #343a40;
+    padding: 20px;
+    color: #ffffff;
     display: flex;
     flex-direction: column;
-    min-height: 87vh;
+    gap: 15px;
+}
+.sidebar .shit {
+    display: flex;
+    padding: 20px 20px;
+    text-decoration: none;
+    font-size: 4rem;
+    color: white;
+    border-radius: 8px;
+    transition: background-color 0.3s;
+
+}
+
+.sidebar  #special a {
+    display: flex;
+    padding: 20px 20px;
+    text-decoration: none;
+    font-size: 1.6rem;
+    color: white;
+    border-radius: 8px;
+    transition: background-color 0.3s;
+
+}
+
+.sidebar #special a:hover {
+    padding: 20px 20px;
+    text-decoration: none;
+    font-size: 1.5rem;
+    color: rgb(74, 171, 192);
+    border-radius: 8px;
+    transition: background-color 0.3s;
+    background-color: #495057;
 }
 
 /* Footer Styling */
@@ -176,112 +181,105 @@ footer {
     text-align: center;
     margin-top: 50px;
     font-size: 0.9rem;
-    color: #888;
+    color: #666;
 }
 
-/* Notification Icon Styling */
+/* Notification Icon */
 #notification-icon {
     position: fixed;
     top: 20px;
-    right: 20px; /* Ensure it's positioned at the top right */
-    z-index: 999; /* Ensure it stays on top of other content */
+    right: 20px;
+    z-index: 999;
 }
 
 #notification-icon img {
-    width: 40px; /* Adjust the size */
+    width: 40px;
     height: 40px;
-    cursor: pointer; /* Add pointer cursor */
+    cursor: pointer;
 }
 
-/* Back to Home Button Styling */
+/* Back to Home Button */
 .back-to-home {
-    margin-top: 20px;
+    margin-top: 30px;
     text-align: center;
 }
 
 .back-button {
-    background-color: #333;
+    background-color: #007bff;
     color: white;
-    padding: 10px 20px;
-    border-radius: 5px;
+    padding: 12px 25px;
+    border-radius: 8px;
     text-decoration: none;
     font-size: 1.2rem;
     transition: background-color 0.3s;
 }
 
 .back-button:hover {
-    background-color: #444;
+    background-color: #0056b3;
 }
 
-/* Modal Styling (Message Box) */
+/* Modal Styling */
 .modal {
-    display: none; /* Hidden by default */
+    display: none;
     position: fixed;
     z-index: 1000;
     left: 0;
     top: 0;
     width: 100%;
     height: 100%;
-    background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent background */
+    background-color: rgba(0, 0, 0, 0.6);
 }
 
 .modal-content {
     background-color: white;
-    padding: 20px;
-    border-radius: 8px;
-    width: 400px;
-    margin: 100px auto;
+    padding: 25px;
+    border-radius: 10px;
+    width: 450px;
+    margin: 120px auto;
     text-align: center;
+    position: relative;
 }
 
 .modal .close {
     color: #aaa;
-    font-size: 28px;
-    font-weight: bold;
+    font-size: 24px;
     position: absolute;
     top: 10px;
     right: 20px;
     cursor: pointer;
 }
 
-.modal .close:hover,
-.modal .close:focus {
+.modal .close:hover {
     color: black;
-    text-decoration: none;
-    cursor: pointer;
 }
 
-/* Interactive Options Styling */
+/* Option Styling */
 .option {
     display: block;
-    padding: 15px 25px;
+    padding: 15px 20px;
     background-color: #007bff;
-    color: #000000;
+    color: white;
     text-decoration: none;
     border-radius: 8px;
-    font-size: 16px;
+    font-size: 1rem;
     text-align: center;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
     transition: background-color 0.3s, transform 0.2s;
 }
 
 .option:hover {
-    color: #ffffff;
-    background-color: #0056b3;
+    background-color: #007bff;
     transform: translateY(-2px);
-}
-
-.option:focus {
-    outline: none;
-    box-shadow: 0 0 0 3px rgba(38, 143, 255, 0.5);
 }
 
 /* Card Styling */
 .card {
-    font-size: 25px;
+    font-size: 1.5rem;
     border: 1px solid #ddd;
     border-radius: 8px;
+    color: black;;
     background-color: #ffffff;
+    padding: 12px;
     transition: box-shadow 0.3s;
 }
 
@@ -289,38 +287,48 @@ footer {
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
-/* Instructions Styling */
+/* Instructions */
 .instructions {
-    font-size: 20px;
+    font-size: 1.2rem;
     text-align: center;
     margin-top: 20px;
+    color: #333;
 }
-
 
 .intro-text {
     text-align: center;
-    padding: 25px;
-    font-size: 21px;
-    font-family: 'Courier New', Courier, monospace;
+    padding-bottom: 30px;
+    font-size: 1.8rem;
+    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
 }
 
-.content {
-    flex: 1; /* Takes up the remaining space between header and footer */
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between; /* Distributes content evenly */
-}
-
-.back-to-home {
-    margin: 20px 0; /* Space for the back button */
-}
-
-footer {
-    /* Footer styling */
-    margin-top: auto; /* Keeps footer at the bottom */
-}
-
+/* Load Cell Readings Styling */
 #loadCellReadings {
     font-weight: bold;
-    font-size:  20px;
+    font-size: 1.2rem;
+    margin-top: 10px;
+}
+.container {
+    width: 90%;
+    max-width: 1000px; /* Set max-width for better control */
+    margin: 0 auto;
+    padding: 20px;
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    display: flex;
+    flex-direction: column;
+    min-height: 81vh;
+    opacity: 0.95;
+}
+.content {  
+    padding-top: 45px;
+}
+h1 {
+    text-align: center;
+    padding-bottom: 50px;
+    font-size: 50px;
+}
+label {
+    font-size: larger;
 }

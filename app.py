@@ -61,18 +61,33 @@ def home():
 def add_grocery():
     if request.method == 'POST':
         name = request.form['name']
-        weight = request.form['weight']
         expiry = request.form['expiry']
-        
-        # Insert the new grocery item into the database
-        conn = get_db_connection()
-        conn.execute('INSERT INTO groceries (name, weight, expiry) VALUES (?, ?, ?)',
-                     (name, weight, expiry))
-        conn.commit()
-        conn.close()
-        
-        return redirect(url_for('home'))  # Redirect to home page after successful addition
-    
+        method = request.form['method']
+        weight = None
+
+        if method == 'manual':
+            weight = request.form['weight']
+        elif method == 'load_cell':
+            selected_load_cell = request.form.get('loadCell')
+            if selected_load_cell:
+                # Fetch real-time weight from Firebase
+                response = requests.get(firebase_db_url)
+                if response.status_code == 200:
+                    data = response.json()
+                    weight = data[f'loadCell{selected_load_cell}']['weight']
+
+        # Ensure weight is a valid number before inserting into the database
+        if weight is not None:
+            conn = get_db_connection()
+            conn.execute(
+                'INSERT INTO groceries (name, weight, expiry) VALUES (?, ?, ?)',
+                (name, float(weight), expiry)
+            )
+            conn.commit()
+            conn.close()
+
+        return redirect(url_for('home'))
+
     return render_template('add_grocery.html')
 
 # Update grocery
@@ -157,7 +172,7 @@ def delete_grocery():
         conn.commit()
         conn.close()
         
-        return redirect(url_for('home'))  # Redirect to home page after successful deletion
+        return redirect(url_for('delete_grocery'))  # Redirect to home page after successful deletion
     
     # Fetch all groceries for the dropdown list
     conn = get_db_connection()

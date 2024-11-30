@@ -14,11 +14,13 @@
 
     <!-- Sidebar -->
     <div class="sidebar">
-        <h2><a href="{{ url_for('home') }}">Pantry+</a></h2>
+        <a class="shit" href="{{ url_for('home') }}">Pantry+</a><br>
+        <div id="special">
         <a href="{{ url_for('add_grocery') }}">Add New Grocery</a>
         <a href="{{ url_for('update_grocery') }}">Update Grocery</a>
         <a href="{{ url_for('stock_levels') }}">Stock Levels</a>
         <a href="{{ url_for('delete_grocery') }}">Delete Grocery</a>
+        </div>
     </div>
 
     <div class="container">
