@@ -5,44 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Pantry+</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
-    <style>
-        /* Add basic styles for the toggle button */
-        .toggle-button {
-            position: fixed;
-            top: 10px;
-            left: 10px;
-            z-index: 1000;
-            background-color: #4CAF50;
-            color: white;
-            border: none;
-            padding: 10px;
-            cursor: pointer;
-            border-radius: 5px;
-        }
-
-        .sidebar {
-            transition: transform 0.3s ease;
-            width: 200px;
-            background-color: #f4f4f4;
-            height: 100%;
-            position: fixed;
-            top: 0;
-            left: 0;
-        }
-
-        .sidebar.hidden {
-            transform: translateX(-100%);
-        }
-
-        .container {
-            margin-left: 200px;
-            transition: margin-left 0.3s ease;
-        }
-
-        .sidebar.hidden + .container {
-            margin-left: 0;
-        }
-    </style>
 </head>
 <body>
     <!-- Background Image -->
@@ -50,21 +12,23 @@
         <img src="{{ url_for('static', filename='images/background-image.png') }}" alt="Background Image">
     </div>
 
-    <!-- Toggle Button -->
-    <button class="toggle-button" id="toggle-button">Toggle Sidebar</button>
-
     <!-- Sidebar -->
-    <div class="sidebar" id="sidebar">
+    <div class="sidebar">
         <a class="shit" href="{{ url_for('home') }}">Pantry+</a><br>
         <div id="special">
-            <a href="{{ url_for('add_grocery') }}">Add New Grocery</a>
-            <a href="{{ url_for('update_grocery') }}">Update Grocery</a>
-            <a href="{{ url_for('stock_levels') }}">Stock Levels</a>
-            <a href="{{ url_for('delete_grocery') }}">Delete Grocery</a>
+        <a href="{{ url_for('add_grocery') }}">Add New Grocery</a>
+        <a href="{{ url_for('update_grocery') }}">Update Grocery</a>
+        <a href="{{ url_for('stock_levels') }}">Stock Levels</a>
+        <a href="{{ url_for('delete_grocery') }}">Delete Grocery</a>
         </div>
     </div>
 
     <div class="container">
+        <!-- Header Section -->
+        <!-- <header>
+            <h1>Welcome to Pantry+</h1>
+        </header> -->
+    
         <!-- Content Section (Dynamic) -->
         <div class="content">
             {% block content %}{% endblock %}
@@ -80,28 +44,5 @@
             <p>&copy; 2024 Pantry+ | Grocery Management App</p>
         </footer>
     </div>
-
-    <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            const sidebar = document.getElementById('sidebar');
-            const toggleButton = document.getElementById('toggle-button');
-
-            // Check the saved state in localStorage
-            const isSidebarHidden = localStorage.getItem('sidebarHidden') === 'true';
-
-            // Apply the saved state
-            if (isSidebarHidden) {
-                sidebar.classList.add('hidden');
-            }
-
-            // Toggle button event listener
-            toggleButton.addEventListener('click', () => {
-                sidebar.classList.toggle('hidden');
-
-                // Save the current state in localStorage
-                localStorage.setItem('sidebarHidden', sidebar.classList.contains('hidden'));
-            });
-        });
-    </script>
 </body>
 </html>
