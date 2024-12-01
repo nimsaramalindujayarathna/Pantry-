@@ -72,10 +72,28 @@
     </div>
 
     <script>
+        // Function to toggle the sidebar
         function toggleSidebar() {
             const sidebar = document.getElementById('sidebar');
             sidebar.classList.toggle('hidden');
+            
+            // Save the state to localStorage
+            if (sidebar.classList.contains('hidden')) {
+                localStorage.setItem('sidebarHidden', 'true');
+            } else {
+                localStorage.setItem('sidebarHidden', 'false');
+            }
         }
+
+        // Check the state from localStorage on page load
+        window.addEventListener('load', function() {
+            const sidebar = document.getElementById('sidebar');
+            const isHidden = localStorage.getItem('sidebarHidden') === 'true';
+            
+            if (isHidden) {
+                sidebar.classList.add('hidden');
+            }
+        });
     </script>
 </body>
 </html>
