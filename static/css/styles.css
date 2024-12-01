@@ -3,76 +3,68 @@
     margin: 0;
     padding: 0;
     box-sizing: border-box;
+    font-size: 100%; /* Ensures consistent sizing */
 }
 
-.highlight-weight {
-    background-color: rgb(144, 238, 144) !important; /* Light Green */
-}
-
-.highlight-expiry {
-    background-color: rgb(255, 250, 120) !important; /* Light Yellow */
-}
-
-.highlight-both {
-    background-color: rgb(255, 99, 71) !important; /* Tomato Red */
+html, body {
+    width: 100%;
+    height: 100%;
+    overflow-x: hidden; /* Prevents horizontal scrolling */
 }
 
 /* Body styling */
 body {
     font-family: 'Roboto', Arial, sans-serif;
     color: #333;
-    padding: 2%;
+    padding: 20px;
     position: relative;
     background-color: #f8f9fa;
-}
-
-/* Background Image */
-#background-image {
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    z-index: -1;
-    opacity: 0.85;
-}
-
-#background-image img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
+    overflow-x: hidden;
 }
 
 /* Container Styling */
+.container {
+    width: 90%;
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    display: flex;
+    flex-direction: column;
+    min-height: 81vh;
+    opacity: 0.95;
+}
 
 /* Header Styling */
 header {
     text-align: center;
-    margin-bottom: 2%;
+    margin-bottom: 25px;
 }
 
 header h1 {
-    font-size: 2.5em;
+    font-size: 2.5rem;
     color: #333;
-    margin-bottom: 0.5em;
+    margin-bottom: 10px;
 }
 
 /* Navigation Bar */
 nav {
     background-color: #007bff;
-    padding: 1% 2%;
-    margin-bottom: 3%;
+    padding: 10px 20px;
+    margin-bottom: 30px;
     border-radius: 8px;
     display: flex;
     justify-content: space-between;
-    flex-wrap: wrap;
+    flex-wrap: wrap; /* Ensures responsiveness */
 }
 
 nav a {
     color: #ffffff;
     text-decoration: none;
-    margin-right: 1.5em;
-    font-size: 1.1em;
+    margin-right: 15px;
+    font-size: 1.1rem;
     transition: color 0.3s;
 }
 
@@ -84,14 +76,14 @@ nav a:hover {
 form {
     display: flex;
     flex-direction: column;
-    gap: 1.5em;
+    gap: 20px;
 }
 
 form input,
 form select,
 form button {
-    padding: 1em;
-    font-size: 1em;
+    padding: 12px;
+    font-size: 1rem;
     border-radius: 8px;
     border: 1px solid #ddd;
     transition: box-shadow 0.3s, border-color 0.3s;
@@ -120,12 +112,12 @@ form button:hover {
 table {
     width: 100%;
     border-collapse: collapse;
-    margin-top: 2%;
+    margin-top: 20px;
 }
 
 table th,
 table td {
-    padding: 1%;
+    padding: 12px;
     text-align: left;
     border-bottom: 1px solid #ddd;
 }
@@ -133,14 +125,18 @@ table td {
 table th {
     background-color: #000000;
     color: #ffffff;
-    font-size: 1.1em;
+    font-size: 1.1rem;
 }
 
 table td {
-    font-size: 1em;
+    font-size: 1rem;
 }
 
-/* Sidebar Styling */
+table td:hover {
+    /* background-color: #f1f1f1; */
+}
+
+/* Sidebar */
 .sidebar {
     height: 100%;
     width: 300px;
@@ -148,18 +144,44 @@ table td {
     top: 0;
     left: 0;
     background-color: #343a40;
-    padding: 2%;
+    padding: 20px;
     color: #ffffff;
     display: flex;
     flex-direction: column;
-    gap: 1.5em;
+    gap: 15px;
+}
+
+.sidebar .shit {
+    display: flex;
+    padding: 20px 20px;
+    text-decoration: none;
+    font-size: 4rem;
+    color: white;
+    border-radius: 8px;
+    transition: background-color 0.3s;
+}
+
+.sidebar #special a {
+    display: flex;
+    padding: 20px 20px;
+    text-decoration: none;
+    font-size: 1.6rem;
+    color: white;
+    border-radius: 8px;
+    transition: background-color 0.3s;
+}
+
+.sidebar #special a:hover {
+    font-size: 1.5rem;
+    color: rgb(74, 171, 192);
+    background-color: #495057;
 }
 
 /* Footer Styling */
 footer {
     text-align: center;
-    margin-top: 5%;
-    font-size: 0.9em;
+    margin-top: 50px;
+    font-size: 0.9rem;
     color: #666;
 }
 
@@ -177,8 +199,125 @@ footer {
     cursor: pointer;
 }
 
-/* Media Queries for responsiveness */
-@media screen and (max-width: 768px) {
+/* Back to Home Button */
+.back-to-home {
+    margin-top: 30px;
+    text-align: center;
+}
+
+.back-button {
+    background-color: #007bff;
+    color: white;
+    padding: 12px 25px;
+    border-radius: 8px;
+    text-decoration: none;
+    font-size: 1.2rem;
+    transition: background-color 0.3s;
+}
+
+.back-button:hover {
+    background-color: #0056b3;
+}
+
+/* Modal Styling */
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.6);
+}
+
+.modal-content {
+    background-color: white;
+    padding: 25px;
+    border-radius: 10px;
+    width: 90%;
+    max-width: 450px;
+    margin: 120px auto;
+    text-align: center;
+    position: relative;
+}
+
+.modal .close {
+    color: #aaa;
+    font-size: 24px;
+    position: absolute;
+    top: 10px;
+    right: 20px;
+    cursor: pointer;
+}
+
+.modal .close:hover {
+    color: black;
+}
+
+/* Option Styling */
+.option {
+    display: block;
+    padding: 15px 20px;
+    background-color: #007bff;
+    color: white;
+    text-decoration: none;
+    border-radius: 8px;
+    font-size: 1rem;
+    text-align: center;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    transition: background-color 0.3s, transform 0.2s;
+}
+
+.option:hover {
+    background-color: #0056b3;
+    transform: translateY(-2px);
+}
+
+/* Card Styling */
+.card {
+    font-size: 1.5rem;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    color: black;
+    background-color: #ffffff;
+    padding: 12px;
+    transition: box-shadow 0.3s;
+}
+
+.card:hover {
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Instructions */
+.instructions {
+    font-size: 1.2rem;
+    text-align: center;
+    margin-top: 20px;
+    color: #333;
+}
+
+.intro-text {
+    text-align: center;
+    padding-bottom: 30px;
+    font-size: 1.8rem;
+    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+}
+
+/* Load Cell Readings Styling */
+#loadCellReadings {
+    font-weight: bold;
+    font-size: 1.2rem;
+    margin-top: 10px;
+}
+
+/* Responsive Media Queries */
+@media only screen and (max-width: 768px) {
+    .container {
+        width: 100%;
+        padding: 15px;
+    }
+
     nav {
         flex-direction: column;
         align-items: center;
@@ -186,26 +325,32 @@ footer {
 
     .sidebar {
         width: 100%;
-        height: auto;
         position: relative;
+        display: flex;
+        flex-direction: row;
+        flex-wrap: wrap;
+        padding: 10px;
     }
 
-    table {
-        font-size: 0.9em;
+    .sidebar .shit,
+    .sidebar #special a {
+        font-size: 2rem;
+        padding: 10px;
     }
-}
 
-@media screen and (max-width: 480px) {
     header h1 {
-        font-size: 2em;
+        font-size: 2rem;
     }
 
-    nav a {
-        font-size: 1em;
+    form input,
+    form select,
+    form button {
+        font-size: 0.9rem;
+        padding: 10px;
     }
 
     table th,
     table td {
-        padding: 0.5em;
+        font-size: 0.9rem;
     }
 }
