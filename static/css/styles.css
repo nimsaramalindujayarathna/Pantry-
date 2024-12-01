@@ -338,7 +338,25 @@ footer {
     display: flex;
     flex-direction: column;
     min-height: 81vh;
-    opacity: 0.95;
+    /* opacity: 0.95; */
+    /* Add transition for a smoother resizing effect */
+    transition: all 0.3s ease-in-out;
+}
+
+/* Responsive styles */
+@media (max-width: 768px) {
+    .container {
+        padding: 15px;
+        min-height: auto; /* Adjust min-height for smaller screens */
+    }
+}
+
+@media (max-width: 480px) {
+    .container {
+        width: 95%; /* Slightly increase the width for smaller screens */
+        padding: 10px;
+        box-shadow: none; /* Optional: remove shadow for smaller screens */
+    }
 }
 .content {  
     padding-top: 45px;
