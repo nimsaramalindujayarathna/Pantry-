@@ -59,7 +59,15 @@
             </div>
             <script>
                 const expiryInput = document.querySelector('#expiry');
-                expiryInput.min = new Date().toISOString().split('T')[0]; // Sets today's date as min
+                
+                // Get today's date in local time (YYYY-MM-DD)
+                const today = new Date();
+                const year = today.getFullYear();
+                const month = String(today.getMonth() + 1).padStart(2, '0'); // Months are 0-indexed
+                const day = String(today.getDate()).padStart(2, '0');
+            
+                // Set the min attribute
+                expiryInput.min = `${year}-${month}-${day}`;
             </script>
             <!-- Submit Button -->
             <button type="submit" class="btn">Update Grocery</button>
