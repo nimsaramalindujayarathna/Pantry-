@@ -26,6 +26,14 @@ body {
     background-color: #f8f9fa;
 }
 
+body .dark-mode {
+    background-color: #121212;
+    color: #ffffff;
+    font-family: 'Roboto', Arial, sans-serif;
+    padding: 20px;
+    position: relative;
+}
+
 /* Background Image */
 #background-image {
     position: absolute;
@@ -123,6 +131,15 @@ form button:hover {
 
 /* Table Styling */
 table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+
+table.dark-mode {
+    background-color: #2a2a2a;
+    color: #ffffff;
+    border: 1px solid #555555;
     width: 100%;
     border-collapse: collapse;
     margin-top: 20px;

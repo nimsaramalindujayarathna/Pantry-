@@ -116,21 +116,18 @@ function calculateDaysUntilExpiry(expiryDateStr) {
 }
 
 function highlightGroceries() {
-    const weightThreshold = parseFloat(document.getElementById('weight-threshold').value);
-    const expiryThreshold = parseInt(document.getElementById('expiry-threshold').value);
-
     const groceryTableBody = document.querySelector('#grocery-table tbody');
     const expiredTableBody = document.querySelector('#expired-grocery-table tbody');
     const outOfStockTableBody = document.querySelector('#out-of-stock-grocery-table tbody');
 
-    groceryTableBody.innerHTML = ''; // Clear main table
-    expiredTableBody.innerHTML = ''; // Clear expired table
-    outOfStockTableBody.innerHTML = ''; // Clear out-of-stock table
+    const isDarkMode = document.body.classList.contains('dark-mode');
+
+    // Clear tables
+    groceryTableBody.innerHTML = '';
+    expiredTableBody.innerHTML = '';
+    outOfStockTableBody.innerHTML = '';
 
     allGroceries.forEach(grocery => {
-        const daysUntilExpiry = calculateDaysUntilExpiry(grocery.expiry);
-        grocery.daysUntilExpiry = daysUntilExpiry; // Update daysUntilExpiry
-
         const row = document.createElement('tr');
         row.setAttribute('data-id', grocery.id);
         row.setAttribute('data-weight', grocery.weight);
@@ -141,29 +138,24 @@ function highlightGroceries() {
             <td>${grocery.name}</td>
             <td>${grocery.weight}</td>
             <td>${grocery.expiry}</td>
-            <td class="days-until-expiry">${daysUntilExpiry < 0 ? 'Expired' : daysUntilExpiry}</td>
+            <td class="days-until-expiry">${grocery.daysUntilExpiry < 0 ? 'Expired' : grocery.daysUntilExpiry}</td>
         `;
 
+        // Apply dark mode class if enabled
+        if (isDarkMode) {
+            row.classList.add('dark-mode');
+        }
+
         if (grocery.weight === 0) {
-            // Move to out-of-stock groceries table
             outOfStockTableBody.appendChild(row);
-        } else if (daysUntilExpiry < 0) {
-            // Move to expired groceries table
+        } else if (grocery.daysUntilExpiry < 0) {
             expiredTableBody.appendChild(row);
         } else {
-            // Apply highlighting logic for non-expired, in-stock groceries
-            let highlightClass = '';
-            if (weightThreshold && grocery.weight < weightThreshold) {
-                highlightClass = 'highlight-weight';
-            }
-            if (expiryThreshold && daysUntilExpiry <= expiryThreshold) {
-                highlightClass = highlightClass ? 'highlight-both' : 'highlight-expiry';
-            }
-            row.className = highlightClass;
             groceryTableBody.appendChild(row);
         }
     });
 }
+
 
 window.onload = () => {
     initializeGroceries();
