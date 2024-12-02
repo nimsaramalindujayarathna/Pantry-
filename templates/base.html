@@ -30,6 +30,33 @@
     </style>
 </head>
 <body>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+    const toggleButton = document.getElementById('dark-mode-toggle');
+    const body = document.body;
+
+    // Check if dark mode was previously enabled
+    const darkModeEnabled = localStorage.getItem('dark-mode') === 'enabled';
+
+    if (darkModeEnabled) {
+        body.classList.add('dark-mode');
+        toggleButton.textContent = 'Switch to Light Mode';
+    }
+
+    toggleButton.addEventListener('click', () => {
+        if (body.classList.contains('dark-mode')) {
+            body.classList.remove('dark-mode');
+            toggleButton.textContent = 'Switch to Dark Mode';
+            localStorage.setItem('dark-mode', 'disabled');
+        } else {
+            body.classList.add('dark-mode');
+            toggleButton.textContent = 'Switch to Light Mode';
+            localStorage.setItem('dark-mode', 'enabled');
+        }
+    });
+});
+
+    </script>
     <!-- Background Image -->
     <div id="background-image">
         <img src="{{ url_for('static', filename='images/background-image.png') }}" alt="Background Image">
@@ -37,7 +64,10 @@
 
     <!-- Toggle Button -->
     <button class="toggle-button" onclick="toggleSidebar()">Toggle Sidebar</button>
-
+    <div style="text-align: right; margin: 10px;">
+        <button id="dark-mode-toggle">Toggle Dark Mode</button>
+    </div>
+    
     <!-- Sidebar -->
     <div class="sidebar" id="sidebar">
         <a class="shit" href="{{ url_for('home') }}">Pantry+</a><br>
