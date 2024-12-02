@@ -474,14 +474,3 @@ button[type="button"]:focus {
     margin-right: 10px;
 }
 
-.highlight-weight {
-    background-color: red;
-}
-
-.highlight-expiry {
-    background-color: yellow;
-}
-
-.highlight-both {
-    background-color: orange;
-}
