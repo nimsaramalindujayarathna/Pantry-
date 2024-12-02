@@ -71,11 +71,29 @@
             <!-- Expired groceries will be dynamically added here -->
         </tbody>
     </table>
+    <br><br>
+    <!-- Out of Stock Groceries Table -->
+<h2>Out of Stock Groceries</h2>
+<table id="out-of-stock-grocery-table">
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Name</th>
+            <th>Weight (g)</th>
+            <th>Expiry Date</th>
+            <th>Days Until Expiry</th>
+        </tr>
+    </thead>
+    <tbody>
+        <!-- Out of stock groceries will be dynamically added here -->
+    </tbody>
+</table>
+
 </div>
 
 <!-- JavaScript for highlighting rows and calculating days -->
 <script>
-    let allGroceries = []; // This will hold all grocery data
+  let allGroceries = []; // This will hold all grocery data
 
 function initializeGroceries() {
     const rows = document.querySelectorAll('#grocery-table tbody tr');
@@ -103,8 +121,11 @@ function highlightGroceries() {
 
     const groceryTableBody = document.querySelector('#grocery-table tbody');
     const expiredTableBody = document.querySelector('#expired-grocery-table tbody');
+    const outOfStockTableBody = document.querySelector('#out-of-stock-grocery-table tbody');
+
     groceryTableBody.innerHTML = ''; // Clear main table
     expiredTableBody.innerHTML = ''; // Clear expired table
+    outOfStockTableBody.innerHTML = ''; // Clear out-of-stock table
 
     allGroceries.forEach(grocery => {
         const daysUntilExpiry = calculateDaysUntilExpiry(grocery.expiry);
@@ -123,10 +144,14 @@ function highlightGroceries() {
             <td class="days-until-expiry">${daysUntilExpiry < 0 ? 'Expired' : daysUntilExpiry}</td>
         `;
 
-        if (daysUntilExpiry < 0) {
+        if (grocery.weight === 0) {
+            // Move to out-of-stock groceries table
+            outOfStockTableBody.appendChild(row);
+        } else if (daysUntilExpiry < 0) {
+            // Move to expired groceries table
             expiredTableBody.appendChild(row);
         } else {
-            // Apply highlighting logic for non-expired groceries
+            // Apply highlighting logic for non-expired, in-stock groceries
             let highlightClass = '';
             if (weightThreshold && grocery.weight < weightThreshold) {
                 highlightClass = 'highlight-weight';
