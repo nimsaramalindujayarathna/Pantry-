@@ -9,12 +9,12 @@
         /* Add basic styles for the toggle button */
         .toggle-button {
             position: fixed;
-            top: 10px;
-            left: 10px;
+            top: 25px;
+            left: 25px;
             z-index: 1000;
             color: white;
             border: none;
-            padding: 10px;
+            padding: 0px;
             cursor:auto;
             border-radius: 5px;
         }
@@ -36,9 +36,8 @@
 
     <!-- Toggle Button -->
     <button class="toggle-button" onclick="toggleSidebar()">
-        <img src="../static/images/sidebar.png" alt="Toggle Sidebar" style="width: 20px; height: 20px; vertical-align: middle;
-    border: none;">
-    </button><br><br>
+        <img src="../static/images/sidebar.png" alt="Toggle Sidebar" style="width: 20px; height: 20px; border: none;">
+    </button>
     <!-- Sidebar -->
     <div class="sidebar" id="sidebar">
         <a class="shit" href="{{ url_for('home') }}">Pantry+</a>
