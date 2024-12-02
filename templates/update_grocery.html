@@ -2,10 +2,12 @@
 
 {% block content %}
 <script>
-    // Get today's date in YYYY-MM-DD format
-    const today = new Date().toISOString().split('T')[0];
-    // Set the min attribute of the date input
-    document.getElementById('expiry').setAttribute('min', today);
+    const today = new Date();
+const localDate = today.getFullYear() + '-' + 
+    String(today.getMonth() + 1).padStart(2, '0') + '-' + 
+    String(today.getDate()).padStart(2, '0');
+document.getElementById('expiry').setAttribute('min', localDate);
+
 </script>
     <div class="container">
         <h1>Update Grocery Weight</h1>
