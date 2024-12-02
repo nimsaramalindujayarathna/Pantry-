@@ -39,7 +39,7 @@
                 <th>Name</th>
                 <th>Weight (g)</th>
                 <th>Expiry Date</th>
-                <th>Days Until Expiry</th> <!-- New column header -->
+                <th>Days Until Expiry</th>
             </tr>
         </thead>
         <tbody>
@@ -54,70 +54,68 @@
             {% endfor %}
         </tbody>
     </table>
+
+    <!-- Expired Groceries Table -->
+    <h2>Expired Groceries</h2>
+    <table id="expired-grocery-table">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Name</th>
+                <th>Weight (g)</th>
+                <th>Expiry Date</th>
+            </tr>
+        </thead>
+        <tbody>
+            <!-- Expired groceries will be dynamically added here -->
+        </tbody>
+    </table>
 </div>
 
 <!-- JavaScript for highlighting rows and calculating days -->
 <script>
     function calculateDaysUntilExpiry(expiryDateStr) {
         const today = new Date();
-        const expiryDate = new Date(expiryDateStr); // Convert to Date object
-        const daysUntilExpiry = Math.floor((expiryDate - today) / (1000 * 60 * 60 * 24));
-
-        console.log(`Expiry Date: ${expiryDateStr}, Days Until Expiry: ${daysUntilExpiry}`);
-
-        return isNaN(daysUntilExpiry) ? 'Invalid Date' : daysUntilExpiry;
+        const expiryDate = new Date(expiryDateStr);
+        return Math.floor((expiryDate - today) / (1000 * 60 * 60 * 24));
     }
 
     function highlightGroceries() {
-        // Get threshold values from input fields
         const weightThreshold = parseFloat(document.getElementById('weight-threshold').value);
         const expiryThreshold = parseInt(document.getElementById('expiry-threshold').value);
 
-        console.log(`Weight Threshold: ${weightThreshold}, Expiry Threshold: ${expiryThreshold}`);
-
-        // Get all table rows (excluding the header)
         const rows = document.querySelectorAll('#grocery-table tbody tr');
-        
+        const expiredTableBody = document.querySelector('#expired-grocery-table tbody');
+        expiredTableBody.innerHTML = ''; // Clear previous entries
+
         rows.forEach(row => {
             const weight = parseFloat(row.getAttribute('data-weight'));
             const expiryDateStr = row.getAttribute('data-expiry');
             const daysUntilExpiry = calculateDaysUntilExpiry(expiryDateStr);
             const daysCell = row.querySelector('.days-until-expiry');
 
-            // Display the calculated days in the new column
             daysCell.textContent = daysUntilExpiry;
 
-            let highlightClass = '';
-
-            console.log(`Row ID: ${row.getAttribute('data-id')}, Weight: ${weight}, Days Until Expiry: ${daysUntilExpiry}`);
-
-            // Check if weight condition is met
-            if (weightThreshold && weight < weightThreshold) {
-                highlightClass = 'highlight-weight'; // Red highlight for weight condition
-                console.log(`Row ${row.getAttribute('data-id')} highlighted for weight condition.`);
-            }
-
-            // Check if expiry condition is met
-            if (expiryThreshold && daysUntilExpiry <= expiryThreshold) {
-                if (highlightClass) {
-                    highlightClass = 'highlight-both'; // Both conditions met
-                    console.log(`Row ${row.getAttribute('data-id')} highlighted for both weight and expiry conditions.`);
-                } else {
-                    highlightClass = 'highlight-expiry'; // Yellow highlight for expiry condition
-                    console.log(`Row ${row.getAttribute('data-id')} highlighted for expiry condition.`);
+            if (daysUntilExpiry < 0) {
+                // Move to expired groceries table
+                const clone = row.cloneNode(true);
+                clone.querySelector('.days-until-expiry').textContent = 'Expired';
+                expiredTableBody.appendChild(clone);
+                row.remove();
+            } else {
+                // Apply highlighting logic for non-expired groceries
+                let highlightClass = '';
+                if (weightThreshold && weight < weightThreshold) {
+                    highlightClass = 'highlight-weight';
                 }
-            }
-
-            // Apply class if necessary
-            row.className = ''; // Clear any existing classes
-            if (highlightClass) {
-                row.classList.add(highlightClass);
-                console.log(`Row ${row.getAttribute('data-id')} class applied: ${highlightClass}`);
+                if (expiryThreshold && daysUntilExpiry <= expiryThreshold) {
+                    highlightClass = highlightClass ? 'highlight-both' : 'highlight-expiry';
+                }
+                row.className = highlightClass;
             }
         });
     }
 
-    // Call highlightGroceries on page load to calculate and display the days
     window.onload = highlightGroceries;
 </script>
 
