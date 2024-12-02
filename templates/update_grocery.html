@@ -1,6 +1,12 @@
 {% extends 'base.html' %}
 
 {% block content %}
+<script>
+    // Get today's date in YYYY-MM-DD format
+    const today = new Date().toISOString().split('T')[0];
+    // Set the min attribute of the date input
+    document.getElementById('expiry').setAttribute('min', today);
+</script>
     <div class="container">
         <h1>Update Grocery Weight</h1>
 
@@ -57,12 +63,7 @@
                 <label for="expiry">New Expiry Date:</label>
                 <input type="date" id="expiry" name="expiry" required>
             </div>
-            <script>
-                // Get today's date in YYYY-MM-DD format
-                const today = new Date().toISOString().split('T')[0];
-                // Set the min attribute of the date input
-                document.getElementById('expiry').setAttribute('min', today);
-            </script>
+            
             <!-- Submit Button -->
             <button type="submit" class="btn">Update Grocery</button>
         </form>
