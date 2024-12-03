@@ -4,6 +4,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Pantry+</title>
+    <link rel="apple-touch-icon" sizes="180x180" href="../static/images/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="../static/images/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="../static/images/favicon-16x16.png">
+    <link rel="manifest" href="../static/images/site.webmanifest">  
     <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
     <style>
         /* Add basic styles for the toggle button */
@@ -17,8 +21,6 @@
             padding: 0px;
             cursor:auto;
             border-radius: 5px;
-            height: 50px;   
-            width: 50px;
         }
 
         .sidebar {
@@ -38,7 +40,7 @@
 
     <!-- Toggle Button -->
     <button class="toggle-button" onclick="toggleSidebar()">
-        <img src="../static/images/sidebar.png" alt="Toggle Sidebar" style="width: 20px; height: 20px; border: none;">
+        <img src="../static/images/sidebar.png" alt="Toggle Sidebar">
     </button>
     <!-- Sidebar -->
     <div class="sidebar" id="sidebar">
