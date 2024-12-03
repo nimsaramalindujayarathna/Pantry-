@@ -182,7 +182,7 @@ table td:hover {
 }
 .sidebar .shit {
     display: flex;
-    padding: 105px 20px;
+    padding: 105px 20px 20px;
     text-decoration: none;
     font-size: 4rem;
     color: white;
