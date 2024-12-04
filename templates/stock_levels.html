@@ -3,7 +3,6 @@
 {% block content %}
 <div class="container">
     <h1>Stock Levels</h1>
-
     <!-- Threshold Input Fields -->
     <div class="form-group1">
         <label for="weight-threshold">Weight (g):</label>
@@ -12,7 +11,6 @@
         <input type="number" id="expiry-threshold" name="expiry-threshold" min="1">
     </div>
     <button id="sp" type="button" onclick="highlightGroceries()" style="cursor: pointer;">Apply</button>
-    
     <!-- Legend for Color Codes -->
     <div class="legend">
         <h3>Legend</h3>
@@ -22,9 +20,16 @@
             <li><span class="highlight-both"></span> Groceries about to run out and expire (Orange)</li>
         </ul>
     </div>
-
+    <!-- Weight Unit Selection -->
+    <div class="weight-unit-selection">
+        <label>Weight Unit:</label>
+        <input type="radio" id="grams" name="weight-unit" value="g" checked>
+        <label for="grams">Grams</label>
+        <input type="radio" id="kilograms" name="weight-unit" value="kg">
+        <label for="kilograms">Kilograms</label>
+    </div>
     <!-- Grocery Stock Table -->
-    <table id="grocery-table" >
+    <table id="grocery-table">
         <thead>
             <tr>
                 <th>ID</th>
@@ -46,11 +51,10 @@
             {% endfor %}
         </tbody>
     </table>
-
     <br><br>
     <!-- Expired Groceries Table -->
     <h2>Expired Groceries</h2>
-    <table id="expired-grocery-table" >
+    <table id="expired-grocery-table">
         <thead>
             <tr>
                 <th>ID</th>
@@ -64,11 +68,10 @@
             <!-- Expired groceries will be dynamically added here -->
         </tbody>
     </table>
-
     <br><br>
     <!-- Out of Stock Groceries Table -->
     <h2>Out of Stock Groceries</h2>
-    <table id="out-of-stock-grocery-table" >
+    <table id="out-of-stock-grocery-table" style="cursor: pointer;">
         <thead>
             <tr>
                 <th>ID</th>
@@ -84,9 +87,10 @@
     </table>
 </div>
 
-<!-- JavaScript for highlighting rows and calculating days -->
 <script>
-  let allGroceries = []; // This will hold all grocery data
+    let allGroceries = []; // This will hold all grocery data
+let weightUnit = 'g'; // Default unit is grams
+let isKilogramsClicked = false; // To track if Kilograms has been clicked
 
 function initializeGroceries() {
     const rows = document.querySelectorAll('#grocery-table tbody tr');
@@ -111,11 +115,9 @@ function calculateDaysUntilExpiry(expiryDateStr) {
 function highlightGroceries() {
     const weightThreshold = parseFloat(document.getElementById('weight-threshold').value);
     const expiryThreshold = parseInt(document.getElementById('expiry-threshold').value);
-
     const groceryTableBody = document.querySelector('#grocery-table tbody');
     const expiredTableBody = document.querySelector('#expired-grocery-table tbody');
     const outOfStockTableBody = document.querySelector('#out-of-stock-grocery-table tbody');
-
     groceryTableBody.innerHTML = ''; // Clear main table
     expiredTableBody.innerHTML = ''; // Clear expired table
     outOfStockTableBody.innerHTML = ''; // Clear out-of-stock table
@@ -123,16 +125,21 @@ function highlightGroceries() {
     allGroceries.forEach(grocery => {
         const daysUntilExpiry = calculateDaysUntilExpiry(grocery.expiry);
         grocery.daysUntilExpiry = daysUntilExpiry; // Update daysUntilExpiry
-
         const row = document.createElement('tr');
         row.setAttribute('data-id', grocery.id);
         row.setAttribute('data-weight', grocery.weight);
         row.setAttribute('data-expiry', grocery.expiry);
 
+        // Display weight based on selected unit
+        let displayWeight = grocery.weight;
+        if (weightUnit === 'kg') {
+            displayWeight = (grocery.weight / 1000).toFixed(3); // Convert to kg
+        }
+
         row.innerHTML = `
             <td>${grocery.id}</td>
             <td>${grocery.name}</td>
-            <td>${grocery.weight}</td>
+            <td>${displayWeight}</td>
             <td>${grocery.expiry}</td>
             <td class="days-until-expiry">${daysUntilExpiry < 0 ? 'Expired' : daysUntilExpiry}</td>
         `;
@@ -158,29 +165,31 @@ function highlightGroceries() {
     });
 }
 
+// Event listener for weight unit toggle
+document.querySelectorAll('input[name="weight-unit"]').forEach(input => {
+    input.addEventListener('change', function() {
+        if (this.value === 'kg' && !isKilogramsClicked) {
+            isKilogramsClicked = true; // Set flag to prevent multiple clicks
+            weightUnit = 'kg';
+        } else if (this.value === 'g') {
+            weightUnit = 'g';
+            isKilogramsClicked = false; // Reset for future kg selection
+        }
+        highlightGroceries(); // Refresh table with updated units
+    });
+});
+
 function sortTable(tableId, columnIndex) {
-    console.log(`Sorting table: ${tableId}, column index: ${columnIndex}`); // Debugging statement
     const table = document.getElementById(tableId);
     const rows = Array.from(table.querySelectorAll('tbody tr'));
-
-    console.log('Before sorting:'); // Debugging statement
-    rows.forEach(row => console.log(row.innerHTML));
-
     rows.sort((a, b) => {
         const cellA = a.cells[columnIndex].textContent.trim();
         const cellB = b.cells[columnIndex].textContent.trim();
-
         if (!isNaN(cellA) && !isNaN(cellB)) {
-            console.log(`Comparing numeric values: ${cellA} vs ${cellB}`); // Debugging statement
             return parseFloat(cellA) - parseFloat(cellB);
         }
-        console.log(`Comparing string values: ${cellA} vs ${cellB}`); // Debugging statement
         return cellA.localeCompare(cellB);
     });
-
-    console.log('After sorting:'); // Debugging statement
-    rows.forEach(row => console.log(row.innerHTML));
-
     const tbody = table.querySelector('tbody');
     tbody.innerHTML = ''; // Clear existing rows
     rows.forEach(row => tbody.appendChild(row));
@@ -190,6 +199,6 @@ window.onload = () => {
     initializeGroceries();
     highlightGroceries();
 };
-</script>
 
+</script>
 {% endblock %}
