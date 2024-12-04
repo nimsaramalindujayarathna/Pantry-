@@ -141,8 +141,6 @@ def update_grocery():
     conn.close()
 
     return render_template('update_grocery.html', groceries=groceries)
-
-# Stock levels (view all groceries with sorting)
 @app.route('/stock-levels', methods=['GET'])
 def stock_levels():
     # Get the sorting parameter from the query string, default to 'expiry'
