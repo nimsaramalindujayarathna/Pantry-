@@ -34,7 +34,7 @@
             <tr>
                 <th>ID</th>
                 <th>Name</th>
-                <th onclick="sortTable('grocery-table', 2)" style="cursor: pointer;">Weight (g)</th>
+                <th onclick="sortTable('grocery-table', 2)" style="cursor: pointer;" id="kgg1">Weight (g)</th>
                 <th onclick="sortTable('grocery-table', 3)" style="cursor: pointer;">Expiry Date</th>
                 <th>Days Until Expiry</th>
             </tr>
@@ -59,7 +59,7 @@
             <tr>
                 <th>ID</th>
                 <th>Name</th>
-                <th onclick="sortTable('expired-grocery-table', 2)" style="cursor: pointer;">Weight (g)</th>
+                <th onclick="sortTable('expired-grocery-table', 2)" style="cursor: pointer;" id="kgg2">Weight (g)</th>
                 <th onclick="sortTable('expired-grocery-table', 3)" style="cursor: pointer;">Expiry Date</th>
                 <th>Status</th>
             </tr>
@@ -76,7 +76,7 @@
             <tr>
                 <th>ID</th>
                 <th>Name</th>
-                <th onclick="sortTable('out-of-stock-grocery-table', 2)" style="cursor: pointer;">Weight (g)</th>
+                <th onclick="sortTable('out-of-stock-grocery-table', 2)" style="cursor: pointer;" id="kgg3">Weight (g)</th>
                 <th onclick="sortTable('out-of-stock-grocery-table', 3)" style="cursor: pointer;">Expiry Date</th>
                 <th>Days Until Expiry</th>
             </tr>
@@ -171,9 +171,15 @@ document.querySelectorAll('input[name="weight-unit"]').forEach(input => {
         if (this.value === 'kg' && !isKilogramsClicked) {
             isKilogramsClicked = true; // Set flag to prevent multiple clicks
             weightUnit = 'kg';
+            document.getElementById('kgg1').innerHTML = "Weight (kg)";
+            document.getElementById('kgg2').innerHTML = "Weight (kg)";
+            document.getElementById('kgg3').innerHTML = "Weight (kg)";
         } else if (this.value === 'g') {
             weightUnit = 'g';
             isKilogramsClicked = false; // Reset for future kg selection
+            document.getElementById('kgg1').innerHTML = "Weight (g)";
+            document.getElementById('kgg2').innerHTML = "Weight (g)";
+            document.getElementById('kgg3').innerHTML = "Weight (g)";
         }
         highlightGroceries(); // Refresh table with updated units
     });
