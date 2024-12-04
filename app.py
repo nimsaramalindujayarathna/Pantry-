@@ -94,61 +94,53 @@ def add_grocery():
 @app.route('/update-grocery', methods=['GET', 'POST'])
 def update_grocery():
     if request.method == 'POST':
-        grocery_id = request.form.get('id')
-        input_method = request.form.get('inputMethod')
-        weight = request.form.get('weight')
-        expiry = request.form.get('expiry')
+        grocery_id = request.form['id']
+        method = request.form['inputMethod']
+        new_weight = None
+        new_expiry = request.form['expiry']
 
-        # Fetch the selected grocery item
-        grocery = Grocery.query.get(grocery_id)
-
-        if not grocery:
-            flash('Grocery not found!', 'danger')
-            return redirect(url_for('update_grocery'))
-
-        if input_method == 'manual':
-            # Update the weight manually
-            try:
-                grocery.weight = float(weight)
-                db.session.commit()
-                flash('Grocery weight updated successfully!', 'success')
-            except ValueError:
-                flash('Invalid weight input. Please enter a valid number.', 'danger')
-
-        elif input_method == 'load_cell':
-            # Update the weight based on real-time data from Firebase
-            load_cell_ref = db.reference('loadCell')
-            load_cell_data = load_cell_ref.get()
-
-            if load_cell_data:
-                # Get the selected load cell ID from the form
-                load_cell_id = request.form.get('loadCell')
-
-                # Check if the selected load cell ID exists in the real-time data
-                if load_cell_id in load_cell_data:
-                    try:
-                        grocery.weight = load_cell_data[load_cell_id]['weight']
-                        db.session.commit()
-                        flash('Grocery weight updated with real-time load cell data!', 'success')
-                    except KeyError:
-                        flash('Selected load cell data not found in Firebase.', 'danger')
+        if method == 'manual':
+            # Get the manual weight from the form
+            new_weight = request.form['weight']
+        elif method == 'load_cell':
+            selected_load_cell = request.form.get('loadCell')
+            if selected_load_cell:
+                # Fetch real-time weight from Firebase
+                response = requests.get(firebase_db_url)
+                if response.status_code == 200:
+                    data = response.json()
+                    # Ensure the expected load cell data exists
+                    if f'loadCell{selected_load_cell}' in data and 'weight' in data[f'loadCell{selected_load_cell}']:
+                        new_weight = data[f'loadCell{selected_load_cell}']['weight']
+                    else:
+                        return "Error: Load cell data is not available or malformed", 400  # Handle the case where the data isn't available
                 else:
-                    flash('Invalid load cell selected.', 'danger')
-            else:
-                flash('Failed to retrieve load cell data from Firebase.', 'danger')
+                    return "Error: Failed to retrieve data from Firebase", 400  # Handle the case where the Firebase request fails
 
-        # Update the expiry date
-        if expiry:
-            grocery.expiry = expiry
-            db.session.commit()
-            flash('Grocery expiry date updated successfully!', 'success')
+        # Ensure weight is a valid number before updating the database
+        if new_weight is not None:
+            try:
+                new_weight = float(new_weight)
+            except ValueError:
+                return "Invalid weight value", 400  # Return an error if the weight is not valid
 
-        return redirect(url_for('update_grocery'))
+            # Update the grocery item's weight and expiry date in the database
+            conn = get_db_connection()
+            conn.execute('UPDATE groceries SET weight = ?, expiry = ? WHERE id = ?',
+                         (new_weight, new_expiry, grocery_id))
+            conn.commit()
+            conn.close()
 
-    # Fetch all groceries to display in the dropdown
-    groceries = Grocery.query.all()
+            return redirect(url_for('home'))  # Redirect to home page after successful update
+        else:
+            return "Error: Weight not provided", 400  # Handle cases where weight is not given
+
+    # Fetch all groceries for the dropdown list
+    conn = get_db_connection()
+    groceries = conn.execute('SELECT * FROM groceries').fetchall()
+    conn.close()
+
     return render_template('update_grocery.html', groceries=groceries)
-# Stock levels (view all groceries with sorting)
 @app.route('/stock-levels', methods=['GET'])
 def stock_levels():
     # Get the sorting parameter from the query string, default to 'expiry'
