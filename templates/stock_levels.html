@@ -4,15 +4,6 @@
 <div class="container">
     <h1>Stock Levels</h1>
 
-    <!-- Sorting Dropdown -->
-    <form method="GET" action="{{ url_for('stock_levels') }}">
-        <label for="sort-by">Sort by: </label>
-        <select name="sort-by" id="sort-by" onchange="this.form.submit()">
-            <option value="expiry" {% if sort_by == 'expiry' %}selected{% endif %}>Expiry Date</option>
-            <option value="weight" {% if sort_by == 'weight' %}selected{% endif %}>Weight</option>
-        </select>
-    </form>
-    <br>
     <!-- Threshold Input Fields -->
     <div class="form-group1">
         <label for="weight-threshold">Weight (g):</label>
@@ -20,7 +11,7 @@
         <label for="expiry-threshold">Number of days:</label>
         <input type="number" id="expiry-threshold" name="expiry-threshold" min="1">
     </div>
-    <button id="sp" type="button" onclick="highlightGroceries()">Apply</button>
+    <button id="sp" type="button" onclick="highlightGroceries()" style="cursor: pointer;">Apply</button>
     
     <!-- Legend for Color Codes -->
     <div class="legend">
@@ -31,14 +22,15 @@
             <li><span class="highlight-both"></span> Groceries about to run out and expire (Orange)</li>
         </ul>
     </div>
+
     <!-- Grocery Stock Table -->
-    <table id="grocery-table">
+    <table id="grocery-table" >
         <thead>
             <tr>
                 <th>ID</th>
                 <th>Name</th>
-                <th>Weight (g)</th>
-                <th>Expiry Date</th>
+                <th onclick="sortTable('grocery-table', 2)" style="cursor: pointer;">Weight (g)</th>
+                <th onclick="sortTable('grocery-table', 3)" style="cursor: pointer;">Expiry Date</th>
                 <th>Days Until Expiry</th>
             </tr>
         </thead>
@@ -54,16 +46,17 @@
             {% endfor %}
         </tbody>
     </table>
+
     <br><br>
     <!-- Expired Groceries Table -->
     <h2>Expired Groceries</h2>
-    <table id="expired-grocery-table">
+    <table id="expired-grocery-table" >
         <thead>
             <tr>
                 <th>ID</th>
                 <th>Name</th>
-                <th>Weight (g)</th>
-                <th>Expiry Date</th>
+                <th onclick="sortTable('expired-grocery-table', 2)" style="cursor: pointer;">Weight (g)</th>
+                <th onclick="sortTable('expired-grocery-table', 3)" style="cursor: pointer;">Expiry Date</th>
                 <th>Status</th>
             </tr>
         </thead>
@@ -71,24 +64,24 @@
             <!-- Expired groceries will be dynamically added here -->
         </tbody>
     </table>
+
     <br><br>
     <!-- Out of Stock Groceries Table -->
-<h2>Out of Stock Groceries</h2>
-<table id="out-of-stock-grocery-table">
-    <thead>
-        <tr>
-            <th>ID</th>
-            <th>Name</th>
-            <th>Weight (g)</th>
-            <th>Expiry Date</th>
-            <th>Days Until Expiry</th>
-        </tr>
-    </thead>
-    <tbody>
-        <!-- Out of stock groceries will be dynamically added here -->
-    </tbody>
-</table>
-
+    <h2>Out of Stock Groceries</h2>
+    <table id="out-of-stock-grocery-table" >
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Name</th>
+                <th onclick="sortTable('out-of-stock-grocery-table', 2)" style="cursor: pointer;">Weight (g)</th>
+                <th onclick="sortTable('out-of-stock-grocery-table', 3)" style="cursor: pointer;">Expiry Date</th>
+                <th>Days Until Expiry</th>
+            </tr>
+        </thead>
+        <tbody>
+            <!-- Out of stock groceries will be dynamically added here -->
+        </tbody>
+    </table>
 </div>
 
 <!-- JavaScript for highlighting rows and calculating days -->
@@ -165,13 +158,38 @@ function highlightGroceries() {
     });
 }
 
+function sortTable(tableId, columnIndex) {
+    console.log(`Sorting table: ${tableId}, column index: ${columnIndex}`); // Debugging statement
+    const table = document.getElementById(tableId);
+    const rows = Array.from(table.querySelectorAll('tbody tr'));
+
+    console.log('Before sorting:'); // Debugging statement
+    rows.forEach(row => console.log(row.innerHTML));
+
+    rows.sort((a, b) => {
+        const cellA = a.cells[columnIndex].textContent.trim();
+        const cellB = b.cells[columnIndex].textContent.trim();
+
+        if (!isNaN(cellA) && !isNaN(cellB)) {
+            console.log(`Comparing numeric values: ${cellA} vs ${cellB}`); // Debugging statement
+            return parseFloat(cellA) - parseFloat(cellB);
+        }
+        console.log(`Comparing string values: ${cellA} vs ${cellB}`); // Debugging statement
+        return cellA.localeCompare(cellB);
+    });
+
+    console.log('After sorting:'); // Debugging statement
+    rows.forEach(row => console.log(row.innerHTML));
+
+    const tbody = table.querySelector('tbody');
+    tbody.innerHTML = ''; // Clear existing rows
+    rows.forEach(row => tbody.appendChild(row));
+}
+
 window.onload = () => {
     initializeGroceries();
     highlightGroceries();
 };
-
-
-
 </script>
 
 {% endblock %}
