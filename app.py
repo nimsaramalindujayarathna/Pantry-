@@ -96,19 +96,25 @@ def update_grocery():
     if request.method == 'POST':
         # Get the data from the form
         grocery_id = request.form['id']
-        new_weight = request.form['weight']
         new_expiry = request.form['expiry']
+        weight = None
         
-        # Ensure that the data is correctly converted to float for weight
-        try:
-            new_weight = float(new_weight)
-        except ValueError:
-            return "Invalid weight value", 400  # Return an error if the weight is not a valid number
-        
+        if method == 'manual':
+            weight = request.form['weight']
+        elif method == 'load_cell':
+            selected_load_cell = request.form.get('loadCell')
+            if selected_load_cell:
+                # Fetch real-time weight from Firebase
+                response = requests.get(firebase_db_url)
+                if response.status_code == 200:
+                    data = response.json()
+                    weight = data[f'loadCell{selected_load_cell}']['weight']
+
+
         # Update the grocery item's weight and expiry date in the database
         conn = get_db_connection()
         conn.execute('UPDATE groceries SET weight = ?, expiry = ? WHERE id = ?',
-                     (new_weight, new_expiry, grocery_id))
+                     (weight, new_expiry, grocery_id))
         conn.commit()
         conn.close()
         

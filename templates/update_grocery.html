@@ -22,16 +22,16 @@
             <!-- Input Method Selection (Radio buttons) -->
             <div class="form-group">
                 <label>Select Input Method:</label><br>
-                <input type="radio" id="manual" name="inputMethod" value="manual" required onclick="toggleInputMethod()"> 
+                <input type="radio" id="manual" name="method" value="manual" onchange="toggleInputMethod()" required>
                 <label for="manual">Manual Entry</label><br>
-                <input type="radio" id="loadCell" name="inputMethod" value="load_cell" onclick="toggleInputMethod()"> 
-                <label for="loadCell">Load Cell</label>
+                <input type="radio" id="load_cell" name="method" value="load_cell" onchange="toggleInputMethod()">
+                <label for="load_cell">Load Cell</label>
             </div>
 
             <!-- Weight Input (Visible only when 'Manual' is selected) -->
             <div class="form-group" id="manualInput" style="display: none;">
-                <label for="weight">New Weight (g):</label>
-                <input type="number" id="weight" name="weight" step="0.01" min="0">
+                <label for="weight">Net Weight (g):</label>
+                <input type="number" id="weight" name="weight" step="0.1" min="0">
             </div>
 
             <!-- Load Cell Selection (Visible only when 'Load Cell' is selected) -->
@@ -78,23 +78,40 @@
         function toggleInputMethod() {
             const manualInput = document.getElementById('manualInput');
             const loadCellSelection = document.getElementById('loadCellSelection');
-            const method = document.querySelector('input[name="inputMethod"]:checked');
+            const manual = document.getElementById('manual').checked;
             
-            if (method) {
-                if (method.value === 'manual') {
-                    manualInput.style.display = 'block';
-                    loadCellSelection.style.display = 'none';
-                } else if (method.value === 'load_cell') {
-                    manualInput.style.display = 'none';
-                    loadCellSelection.style.display = 'block';
-                }
+            if (manual) {
+                manualInput.style.display = 'block';
+                loadCellSelection.style.display = 'none';
+                document.querySelectorAll('input[name="loadCell"]').forEach((input) => {
+                    input.removeAttribute('required');
+                });
+            } else {
+                manualInput.style.display = 'none';
+                loadCellSelection.style.display = 'block';
+        
+        // Add required attribute to load cell radios
+                document.querySelectorAll('input[name="loadCell"]').forEach((input) => {
+                input.setAttribute('required', 'true');
+                });
             }
         }
+        function fetchLoadCellReading() {
+            const selectedLoadCell = document.querySelector('input[name="loadCell"]:checked');
 
-        // Set the minimum date for the expiry input to today's date
+            if (selectedLoadCell) {
+                const loadCellId = selectedLoadCell.value;
+                console.log(`Fetching weight for Load Cell ${loadCellId}`);
+            // Additional functionality can be added here to handle specific actions on selection
+            }
+        }
+            
+        
+
+        // Set the min date for the expiry field to today
         document.addEventListener('DOMContentLoaded', function () {
             const today = new Date().toISOString().split('T')[0];
-            document.getElementById('expiry').min = today;
+            document.getElementById('expiry').setAttribute('min', today);
         });
     </script>
 

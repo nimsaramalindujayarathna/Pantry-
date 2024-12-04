@@ -23,23 +23,25 @@
         <!-- Manual Weight Input -->
         <div class="form-group" id="manualInput" style="display: none;">
             <label for="weight">Net Weight (g):</label>
-            <input type="number" id="weight" name="weight" step="0.01" min="0" placeholder="0">
+            <input type="number" id="weight" name="weight" step="0.1" min="0" placeholder="0">
         </div>
 
         <!-- Load Cell Selection -->
         <div id="loadCellSelection" style="display: none;">
-            <label>Select Load Cell:</label><br><input type="radio" id="loadCell1" name="loadCell" value="1" required>
-            <label for="loadCell1">Scale 1:  </label>
-            <span id="weight1" style="font-weight: bold;">Loading...</span><br>
-            
-            <input type="radio" id="loadCell2" name="loadCell" value="2" required>
-            <label for="loadCell2">Scale 2:  </label>
-            <span id="weight2" style="font-weight: bold;">Loading...</span><br>
-            
-            <input type="radio" id="loadCell3" name="loadCell" value="3" required>
-            <label for="loadCell3">Scale 3: </label>
-            <span id="weight3" style="font-weight: bold;">Loading...</span>
-        
+            <div class="form-group">
+                <label>Select Load Cell:</label><br>
+                <input type="radio" id="loadCell1" name="loadCell" value="1">
+                <label for="loadCell1">Scale 1:</label>
+                <span id="weight1" style="font-weight: bold;">Loading...</span><br>
+                
+                <input type="radio" id="loadCell2" name="loadCell" value="2">
+                <label for="loadCell2">Scale 2:</label>
+                <span id="weight2" style="font-weight: bold;">Loading...</span><br>
+                
+                <input type="radio" id="loadCell3" name="loadCell" value="3">
+                <label for="loadCell3">Scale 3:</label>
+                <span id="weight3" style="font-weight: bold;">Loading...</span>
+            </div>
         </div>
 
         <!-- Expiry Date -->
