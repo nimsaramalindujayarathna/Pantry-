@@ -133,7 +133,7 @@ function highlightGroceries() {
         // Display weight based on selected unit
         let displayWeight = grocery.weight;
         if (weightUnit === 'kg') {
-            displayWeight = (grocery.weight / 1000).toFixed(3); // Convert to kg
+            displayWeight = Number((grocery.weight / 1000).toFixed(3));
         }
 
         row.innerHTML = `
