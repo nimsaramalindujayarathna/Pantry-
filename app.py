@@ -94,31 +94,52 @@ def add_grocery():
 @app.route('/update-grocery', methods=['GET', 'POST'])
 def update_grocery():
     if request.method == 'POST':
-        # Get the data from the form
         grocery_id = request.form['id']
-        new_weight = request.form['weight']
+        method = request.form['inputMethod']
+        new_weight = None
         new_expiry = request.form['expiry']
-        
-        # Ensure that the data is correctly converted to float for weight
-        try:
-            new_weight = float(new_weight)
-        except ValueError:
-            return "Invalid weight value", 400  # Return an error if the weight is not a valid number
-        
-        # Update the grocery item's weight and expiry date in the database
-        conn = get_db_connection()
-        conn.execute('UPDATE groceries SET weight = ?, expiry = ? WHERE id = ?',
-                     (new_weight, new_expiry, grocery_id))
-        conn.commit()
-        conn.close()
-        
-        return redirect(url_for('home'))  # Redirect to home page after successful update
-    
+
+        if method == 'manual':
+            # Get the manual weight from the form
+            new_weight = request.form['weight']
+        elif method == 'load_cell':
+            selected_load_cell = request.form.get('loadCell')
+            if selected_load_cell:
+                # Fetch real-time weight from Firebase
+                response = requests.get(firebase_db_url)
+                if response.status_code == 200:
+                    data = response.json()
+                    # Ensure the expected load cell data exists
+                    if f'loadCell{selected_load_cell}' in data and 'weight' in data[f'loadCell{selected_load_cell}']:
+                        new_weight = data[f'loadCell{selected_load_cell}']['weight']
+                    else:
+                        return "Error: Load cell data is not available or malformed", 400  # Handle the case where the data isn't available
+                else:
+                    return "Error: Failed to retrieve data from Firebase", 400  # Handle the case where the Firebase request fails
+
+        # Ensure weight is a valid number before updating the database
+        if new_weight is not None:
+            try:
+                new_weight = float(new_weight)
+            except ValueError:
+                return "Invalid weight value", 400  # Return an error if the weight is not valid
+
+            # Update the grocery item's weight and expiry date in the database
+            conn = get_db_connection()
+            conn.execute('UPDATE groceries SET weight = ?, expiry = ? WHERE id = ?',
+                         (new_weight, new_expiry, grocery_id))
+            conn.commit()
+            conn.close()
+
+            return redirect(url_for('home'))  # Redirect to home page after successful update
+        else:
+            return "Error: Weight not provided", 400  # Handle cases where weight is not given
+
     # Fetch all groceries for the dropdown list
     conn = get_db_connection()
     groceries = conn.execute('SELECT * FROM groceries').fetchall()
     conn.close()
-    
+
     return render_template('update_grocery.html', groceries=groceries)
 
 # Stock levels (view all groceries with sorting)
