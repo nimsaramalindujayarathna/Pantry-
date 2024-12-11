@@ -3,7 +3,7 @@
 #include "HX711.h"
 
 // Wi-Fi credentials
-const char* ssid = "Mobitel";
+const char* ssid = "Redmi";
 const char* password = "12345678";
 
 // Firebase details
@@ -18,10 +18,17 @@ const char* firebaseAuth = "iF1ikrJWIDietLIhmWefwBRzehKEfnuDKAdovxy7";          
 #define LOADCELL3_DOUT_PIN  14 // GPIO pin connected to HX711 DOUT for load cell 3
 #define LOADCELL3_SCK_PIN   15 // GPIO pin connected to HX711 SCK for load cell 3
 
+// LED Pins
+#define LOADCELL1LED 25
+#define LOADCELL2LED 26
+#define LOADCELL3LED 27
+
+const int threshold = 100;
+
 // Calibration factors for the load cells
-const float CALIBRATION_FACTOR1 = 511; // Replace with your calibration value for load cell 1
-const float CALIBRATION_FACTOR2 = 50; // Replace with your calibration value for load cell 2
-const float CALIBRATION_FACTOR3 = 1; // Replace with your calibration value for load cell 3
+const float CALIBRATION_FACTOR1 = 97536 / 200; // Replace with your calibration value for load cell 1
+const float CALIBRATION_FACTOR2 = 99053 / 200; // Replace with your calibration value for load cell 2
+const float CALIBRATION_FACTOR3 = 218515 / 200; // Replace with your calibration value for load cell 3
 
 // Create HX711 objects for each load cell
 HX711 scale1;
@@ -64,6 +71,11 @@ void setup() {
   scale2.tare();
   scale3.tare();
   Serial.println("Scales tared. Ready to measure.");
+
+  // Initialize LED pins as outputs
+  pinMode(LOADCELL1LED, OUTPUT);
+  pinMode(LOADCELL2LED, OUTPUT);
+  pinMode(LOADCELL3LED, OUTPUT);
 }
 
 void loop() {
@@ -75,11 +87,26 @@ void loop() {
 
     Serial.print("Weight from load cell 1: ");
     Serial.println(weight1);
+    // Turn on LEDs if calibration factor is less than 200
+    if (weight1 < threshold) {
+      digitalWrite(LOADCELL1LED, HIGH);
+    } else {
+      digitalWrite(LOADCELL1LED, LOW);
+    }
     Serial.print("Weight from load cell 2: ");
     Serial.println(weight2);
+    if (weight2 < threshold) {
+      digitalWrite(LOADCELL2LED, HIGH);
+    } else {
+      digitalWrite(LOADCELL2LED, LOW);
+    }
     Serial.print("Weight from load cell 3: ");
     Serial.println(weight3);
-
+    if (weight3 < threshold) {
+      digitalWrite(LOADCELL3LED, HIGH);
+    } else {
+      digitalWrite(LOADCELL3LED, LOW);
+    }
     // Send data to Firebase
     sendToFirebase(weight1, weight2, weight3);
   } else {
