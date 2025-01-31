@@ -1,0 +1,16 @@
+{
+  "loadCell": {
+    "loadCell1": {
+      "weight": 1000
+    },
+    "loadCell2": {
+      "weight": 450
+    },
+    "loadCell3": {
+      "weight": 500
+    },
+    "loadCell4": {
+      "weight": 50
+    }
+  }
+}
